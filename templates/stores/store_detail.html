@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ store.name }} | Store Management{% endblock title %}
+
+{% block content %}
+<div class="store-admin-wrapper">
+    
+    {# Store Admin Sidebar Navigation #}
+    <aside class="store-admin-sidebar">
+        <div class="store-sidebar-header">
+            <h4 class="store-sidebar-title">{{ store.name }}</h4>
+            <a href="{% url 'storefront:store_home' store_id=store.id %}" class="store-sidebar-link" target="_blank" title="View your live public-facing store in a new tab">View Live Store</a>
+        </div>
+        <nav class="store-sidebar-nav">
+            <a href="{% url 'stores:store_detail' store_id=store.id %}" class="store-nav-link active"><span>📊</span> Overview</a>
+            <a href="{% url 'stores:product_list' store_id=store.id %}" class="store-nav-link"><span>📦</span> Products</a>
+            <a href="#" class="store-nav-link disabled"><span>🛒</span> Orders <span class="badge soon">Soon</span></a>
+            <a href="#" class="store-nav-link disabled"><span>🎨</span> Customize Theme <span class="badge soon">Soon</span></a>
+            <a href="{% url 'stores:select_theme' store_id=store.id %}" class="store-nav-link"><span>🖼️</span> Change Theme</a>
+            <a href="#" class="store-nav-link disabled"><span>⚙️</span> Settings <span class="badge soon">Soon</span></a>
+        </nav>
+    </aside>
+
+    {# Main Content Area for Store Management #}
+    <div class="store-admin-main-content">
+        <div class="content-header">
+            <h1 class="content-title">Store Overview</h1>
+            <p class="content-subtitle">A summary of your store's details and activity.</p>
+        </div>
+
+        {# Quick Stats Cards #}
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h4>Total Products</h4>
+                <p>{{ products.count }}</p>
+            </div>
+            <div class="stat-card">
+                <h4>Total Orders</h4>
+                <p>0</p> {# Placeholder #}
+            </div>
+            <div class="stat-card">
+                <h4>Total Revenue</h4>
+                <p>0 PKR</p> {# Placeholder #}
+            </div>
+             <div class="stat-card">
+                <h4>Active Theme</h4>
+                <p>{{ store.active_theme.name|default:"Not Selected" }}</p>
+            </div>
+        </div>
+
+        {# Products List Section #}
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h3 class="dashboard-section-title">Your Products</h3>
+                <a href="{% url 'stores:add_product' store_id=store.id %}" class="button button-primary-themed">Add New Product</a>
+            </div>
+
+            {% if products %}
+                <div class="content-card product-list-admin"> 
+                    {% for product in products %}
+                        <div class="product-list-item">
+                            <div class="product-item-info">
+                                {% if product.image and product.image.url %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-item-thumbnail">
+                                {% else %}
+                                    <div class="product-item-thumbnail placeholder-thumb"></div>
+                                {% endif %}
+                                <div class="product-item-details">
+                                    <h5 class="product-item-name">{{ product.name }}</h5>
+                                    <p class="product-item-meta">Price: {{ product.price }} PKR | Stock: {{ product.stock_quantity }}</p>
+                                </div>
+                            </div>
+                            <div class="product-item-actions">
+                                <a href="{% url 'stores:edit_product' store_id=store.id product_id=product.id %}" class="button button-small-icon" title="Edit">✏️</a>
+                                <a href="{% url 'stores:delete_product' store_id=store.id product_id=product.id %}" class="button button-small-icon button-danger" title="Delete">🗑️</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-items-card">
+                    <p>You haven't added any products to this store yet.</p>
+                    <p>Click the "Add New Product" button to get started!</p>
+                </div>
+            {% endif %}
+        </div>
+    
+    </div>
+</div>
+{% endblock content %}

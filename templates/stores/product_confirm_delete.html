@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Delete - {{ product.name }}{% endblock title %}
+
+{% block content %}
+    <div class="confirmation-card section-card" style="max-width: 600px; margin: 2rem auto;">
+        <h2>Confirm Deletion</h2>
+        <p>Are you sure you want to delete the product: <strong>"{{ product.name }}"</strong> from your store "<strong>{{ store.name }}</strong>"?</p>
+        <p>This action cannot be undone.</p>
+
+        <form method="post" action="{% url 'stores:delete_product' store_id=store.id product_id=product.id %}">
+            {% csrf_token %}
+            <div class="confirmation-actions" style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem;">
+                <button type="submit" class="button button-danger">Yes, Delete</button>
+                <a href="{% url 'stores:store_detail' store_id=store.id %}" class="button button-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

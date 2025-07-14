@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Shopping Cart - Moohaar{% endblock title %}
+
+{% block content %}
+    {% if store and store.active_theme and store.active_theme.template_dir == 'eshopper' %}
+        {% include "cart/eshopper_cart.html" %}
+    {% elif store and store.active_theme and store.active_theme.template_dir == 'mini_shop' %}
+        {% include "cart/mini_shop_cart.html" %}
+    {% else %}
+        <div class="container">
+            <h1>Shopping Cart</h1>
+            
+            {% if cart %}
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart %}
+                            {% with product=item.product %}
+                            <tr>
+                                <td>
+                                    {% if product.images.first %}
+                                        <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" width="50">
+                                    {% else %}
+                                        <img src="{% static 'images/placeholder.png' %}" alt="Placeholder" width="50">
+                                    {% endif %}
+                                    {{ product.name }}
+                                </td>
+                                <td>{{ item.price }} PKR</td>
+                                <td>
+                                    <input type="number" value="{{ item.quantity }}" min="1" readonly>
+                                </td>
+                                <td>{{ item.total_price }} PKR</td>
+                                <td>
+                                    <form action="{% url 'cart:cart_remove' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endwith %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <div class="cart-summary">
+                    <h3>Cart Summary</h3>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>{{ cart.get_total_price }} PKR</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span>FREE</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span>{{ cart.get_total_price }} PKR</span>
+                    </div>
+                    
+                    <a href="{% url 'orders:order_create' %}" class="button button-primary-themed">Proceed To Checkout</a>
+                </div>
+            {% else %}
+                <p>Your cart is empty.</p>
+                <a href="{% url 'storefront:platform_home' %}" class="button">Continue Shopping</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock content %}

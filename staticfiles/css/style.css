@@ -1,0 +1,31 @@
+/* static/css/style.css */
+/* A basic 2-column layout to build upon. */
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.platform-wrapper {
+    display: flex;
+}
+
+.platform-sidebar {
+    width: 240px; /* Fixed width */
+    flex-shrink: 0; /* Prevents the sidebar from shrinking */
+    height: 100vh;
+    padding: 1rem;
+    background-color: #f8f9fa; /* A simple background to see it clearly */
+    border-right: 1px solid #dee2e6;
+}
+
+.platform-main-content {
+    flex-grow: 1; /* Allows the content to take up the remaining space */
+    padding: 2rem;
+    overflow-y: auto; /* Adds scrolling to content if it overflows */
+}
+
+.platform-sidebar nav a {
+    display: block;
+    padding: 0.5rem 0;
+}

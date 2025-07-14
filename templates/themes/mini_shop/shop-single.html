@@ -1,0 +1,147 @@
+{% extends "themes/mini_shop/mini_shop_base.html" %}
+{% load static %}
+
+{% block main_content %}
+    <!-- Open Content -->
+    <section class="bg-light">
+        <div class="container pb-5">
+            <div class="row">
+                <div class="col-lg-5 mt-5">
+                    <div class="card mb-3">
+                        {% if product.images.first %}
+                        <img class="card-img img-fluid" src="{{ product.images.first.image.url }}" alt="{{ product.name }}" id="product-detail">
+                        {% else %}
+                        <img class="card-img img-fluid" src="{% static 'themes/mini_shop/assets/img/product_single_01.jpg' %}" alt="{{ product.name }}" id="product-detail">
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        {% for image in product.images.all %}
+                        <div class="col-1 col-md-3">
+                            <div class="card mb-2">
+                                <img class="card-img img-fluid" src="{{ image.image.url }}" alt="{{ product.name }} image {{ forloop.counter }}" onclick="document.getElementById('product-detail').src='{{ image.image.url }}'">
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- col end -->
+                <div class="col-lg-7 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 class="h2">{{ product.name }}</h1>
+                            <p class="h3 py-2">${{ product.price }}</p>
+                            <p class="py-2">
+                                <i class="fa fa-star text-warning"></i>
+                                <i class="fa fa-star text-warning"></i>
+                                <i class="fa fa-star text-warning"></i>
+                                <i class="fa fa-star text-warning"></i>
+                                <i class="fa fa-star text-secondary"></i>
+                                <span class="list-inline-item text-dark">Rating 4.8 | 36 Comments</span>
+                            </p>
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <h6>Brand:</h6>
+                                </li>
+                                <li class="list-inline-item">
+                                    <p class="text-muted"><strong>{{ product.brand|default:"Generic" }}</strong></p>
+                                </li>
+                            </ul>
+
+                            <h6>Description:</h6>
+                            <p>{{ product.description }}</p>
+
+                            <form action="{% url 'cart:add_to_cart' product.id %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="product-title" value="{{ product.name }}">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <ul class="list-inline pb-3">
+                                            <li class="list-inline-item text-right">
+                                                Quantity
+                                                <input type="hidden" name="quantity" id="product-quanity" value="1">
+                                            </li>
+                                            <li class="list-inline-item"><span class="btn btn-success" id="btn-minus">-</span></li>
+                                            <li class="list-inline-item"><span class="badge bg-secondary" id="var-value">1</span></li>
+                                            <li class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row pb-3">
+                                    <div class="col d-grid">
+                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="addtocard">Add To Cart</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Close Content -->
+
+    <!-- Start Article -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-left p-2 pb-3">
+                <h4>Related Products</h4>
+            </div>
+
+            <div class="row">
+                {% for related_product in related_products %}
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="{% url 'storefront:product_detail' store_id=store.id product_id=related_product.id %}">
+                            {% if related_product.images.first %}
+                            <img src="{{ related_product.images.first.image.url }}" class="card-img-top" alt="{{ related_product.name }}">
+                            {% else %}
+                            <img src="{% static 'themes/mini_shop/assets/img/shop_01.jpg' %}" class="card-img-top" alt="{{ related_product.name }}">
+                            {% endif %}
+                        </a>
+                        <div class="card-body">
+                            <ul class="list-unstyled d-flex justify-content-between">
+                                <li>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-muted fa fa-star"></i>
+                                </li>
+                                <li class="text-muted text-right">${{ related_product.price }}</li>
+                            </ul>
+                            <a href="{% url 'storefront:product_detail' store_id=store.id product_id=related_product.id %}" class="h2 text-decoration-none text-dark">{{ related_product.name }}</a>
+                            <p class="card-text">
+                                {{ related_product.description|truncatewords:20 }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- End Article -->
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+    <script>
+    // Quantity control
+    document.getElementById('btn-minus').addEventListener('click', function() {
+        var val = parseInt(document.getElementById('var-value').textContent);
+        val = val - 1;
+        if (val >= 1) {
+            document.getElementById('var-value').textContent = val;
+            document.getElementById('product-quanity').value = val;
+        }
+    });
+
+    document.getElementById('btn-plus').addEventListener('click', function() {
+        var val = parseInt(document.getElementById('var-value').textContent);
+        val = val + 1;
+        document.getElementById('var-value').textContent = val;
+        document.getElementById('product-quanity').value = val;
+        });
+    </script>
+{% endblock %}

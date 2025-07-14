@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Create Your Store - Moohaar{% endblock title %}
+
+{% block content %}
+<div class="content-header">
+    <h1 class="content-title">Register Your New Store</h1>
+    <p class="content-subtitle">Fill out the details below to get started. You can only create one store per account.</p>
+</div>
+
+<form method="post" class="content-card form-layout">
+    {% csrf_token %}
+
+    {% if form.non_field_errors or form.errors %}
+        <div class="form-error-message form-span-all">
+            {% if form.non_field_errors %}
+                <ul class="errorlist">
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>Please correct the errors highlighted below.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+    
+    <div class="form-field-wrapper form-span-all">
+        <label for="{{ form.name.id_for_label }}">Store Name</label>
+        {{ form.name }}
+        {% if form.name.errors %}<ul class="errorlist">{% for error in form.name.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+
+    <div class="form-field-wrapper">
+        <label for="{{ form.business_email.id_for_label }}">Business Email (Optional)</label>
+        {{ form.business_email }}
+        {% if form.business_email.errors %}<ul class="errorlist">{% for error in form.business_email.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+
+    <div class="form-field-wrapper">
+        <label for="{{ form.phone_number.id_for_label }}">Phone Number (Optional)</label>
+        {{ form.phone_number }}
+        {% if form.phone_number.errors %}<ul class="errorlist">{% for error in form.phone_number.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+
+    <div class="form-field-wrapper form-span-all">
+        <label for="{{ form.whatsapp_number.id_for_label }}">WhatsApp Number (Optional)</label>
+        {{ form.whatsapp_number }}
+        {% if form.whatsapp_number.errors %}<ul class="errorlist">{% for error in form.whatsapp_number.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+    
+    <div class="form-actions form-span-all">
+        {# The cancel button goes back to the user dashboard #}
+        <a href="{% url 'user_dashboard' %}" class="button button-secondary-themed">Cancel</a>
+        <button type="submit" class="button button-primary-themed">Create Store</button>
+    </div>
+</form>
+{% endblock content %}

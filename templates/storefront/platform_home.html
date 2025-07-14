@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moohaar - Your Business, Your Website, Your Way</title>
+    <link rel="stylesheet" href="{% static 'css/landing_page.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <header class="landing-header">
+        <nav class="container landing-nav">
+            <div class="landing-logo">
+                <a href="{% url 'platform_home' %}">Moohaar</a>
+            </div>
+            <div class="landing-nav-links">
+                <a href="#">Features</a>
+                <a href="#">Pricing</a>
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}" class="button button-cta">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="landing-hero">
+            <div class="container">
+                <h1 class="landing-title">Build Your Online Store in Minutes</h1>
+                <h2 class="landing-subtitle">"ویب سائٹ آج اور ابھی"</h2>
+                <p class="landing-description">
+                    Join Moohaar and get everything you need to start selling online. Perfect for businesses in Pakistan, no laptop or big budget required. Build your brand with a beautiful, mobile-first website.
+                </p>
+                <a href="{% url 'register' %}" class="button button-cta-large">Start Your Free Trial</a>
+            </div>
+        </section>
+        
+        <section class="landing-features">
+            <div class="container">
+                <h3 class="section-heading">Everything You Need to Succeed</h3>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <h3>Easy to Use</h3>
+                        <p>Build your beautiful online store from your mobile phone. No coding required.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Beautiful Themes</h3>
+                        <p>Choose from a variety of modern, mobile-responsive themes to make your brand stand out.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Local Payments Ready</h3>
+                        <p>Accept payments easily with integrated gateways like JazzCash and Easypaisa.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="landing-footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <p>&copy; {% now "Y" %} Moohaar. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en"> {# data-theme will be set on body by JS #}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block page_title %}Moohaar Store{% endblock page_title %} - {% if store %}{{ store.name }}{% else %}Welcome{% endif %}</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{% static 'css/theme_moohaar_default.css' %}">
+    
+    {% block extra_head %}{% endblock extra_head %} {# This is where product_detail_styles.css will be linked #}
+</head>
+<body data-theme="light" class="moohaar-theme-wrapper"> 
+
+    {% block theme_header %}
+    <header class="storefront-site-header">
+        <div class="announcement-bar">
+            <div class="container"> 
+                <div class="announcement-slider" id="announcementSlider">
+                    <div class="announcement-item active">🎉 Get 50% OFF on your first order!</div>
+                    <div class="announcement-item">🚚 Free Delivery over 1000 PKR!</div>
+                    <div class="announcement-item">🌟 New Arrivals this week! Check them out!</div>
+                </div>
+            </div>
+        </div>
+        <div class="main-header-area">
+            <div class="container">
+                <div class="logo-area-theme">
+                    <a href="{% if store %}{% url 'storefront:store_home' store_id=store.id %}{% else %}/{% endif %}" class="logo-link-theme">
+                        <span class="logo-text-theme">Moohaar</span> 
+                    </a>
+                    <p class="tagline-theme">ویب سائٹ آج اور ابھی</p>
+                </div>
+                <nav class="desktop-nav">
+                    <a href="{% if store %}{% url 'storefront:store_home' store_id=store.id %}{% else %}/{% endif %}">Home</a>
+                    <a href="#">Shop</a><a href="#">Collections</a><a href="#">Contact Us</a>
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'user_dashboard' %}">My Dashboard</a> 
+                        <a href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                        <a href="{% url 'login' %}">Login</a> 
+                    {% endif %}
+                    <button class="theme-toggle-button" id="storefront-theme-toggle-button" title="Toggle theme" aria-label="Toggle theme">
+                        <span class="icon-light" style="display:none;">☀️</span>
+                        <span class="icon-dark" style="display:none;">🌙</span>
+                    </button>
+                </nav>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle-button" aria-label="Open navigation menu" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+        <nav class="mobile-nav" id="mobile-navigation-menu">
+            <a href="{% if store %}{% url 'storefront:store_home' store_id=store.id %}{% else %}/{% endif %}">Home</a>
+            <a href="#">Shop</a><a href="#">Collections</a><a href="#">Contact Us</a>
+            {% if request.user.is_authenticated %}
+                 <a href="{% url 'user_dashboard' %}">My Dashboard</a> 
+                 <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </nav>
+    </header>
+    {% endblock theme_header %}
+
+    <main class="storefront-main-content">
+        {% block storefront_content %}
+        <div class="container">
+             <p style="text-align:center; padding:2rem;">This is the default storefront base content. Your page content goes here.</p>
+        </div>
+        {% endblock storefront_content %}
+    </main>
+
+    {% block theme_footer %}
+    <footer class="storefront-site-footer">
+        <div class="footer-main">
+            <div class="container">
+                <div class="footer-columns">
+                    <div class="footer-column about-column"><h4 class="footer-logo-text">Moohaar</h4><p class="footer-about-text">Your go-to place for amazing products. Quality and customer satisfaction are our top priorities.</p><div class="social-media-links"><a href="#" aria-label="Facebook">FB</a><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="Twitter">TW</a></div></div>
+                    <div class="footer-column links-column"><h4>Information</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Contact Us</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms & Conditions</a></li><li><a href="#">FAQ</a></li></ul></div>
+                    <div class="footer-column links-column"><h4>Customer Service</h4><ul><li><a href="#">Shipping Information</a></li><li><a href="#">Returns & Exchanges</a></li><li><a href="#">Order Tracking</a></li><li><a href="#">My Account</a></li></ul></div>
+                    <div class="footer-column contact-column"><h4>Contact Us</h4><p>123 Main Street, City, Country<br>Phone: (123) 456-7890<br>Email: info@examplestore.com</p></div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom"><div class="container"><p>&copy; {% now "Y" %} {{ store.name|default:"Your Store Name" }}. All Rights Reserved. | Powered by Moohaar</p></div></div>
+    </footer>
+    {% endblock theme_footer %}
+
+    <script>
+        const storefrontThemeToggleButton = document.getElementById('storefront-theme-toggle-button');
+        const mobileMenuToggleButton = document.getElementById('mobile-menu-toggle-button');
+        const mobileNav = document.getElementById('mobile-navigation-menu');
+        const bodyElementForTheme = document.body; 
+        function applyStorefrontTheme(theme) { /* ... existing JS ... */ }
+        let preferredStorefrontTheme = localStorage.getItem('storefrontTheme');
+        if (!preferredStorefrontTheme) { preferredStorefrontTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+        applyStorefrontTheme(preferredStorefrontTheme);
+        if (storefrontThemeToggleButton) { /* ... existing JS ... */ }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => { if (!localStorage.getItem('storefrontTheme')) { applyStorefrontTheme(event.matches ? 'dark' : 'light'); } });
+        if (mobileMenuToggleButton && mobileNav) { /* ... existing JS ... */ }
+        document.addEventListener('DOMContentLoaded', function() { /* ... existing announcement slider JS ... */ });
+    </script> {# For brevity, I've collapsed the JS here, but ensure you have the full correct JS from before #}
+    {% block extra_scripts %}{% endblock extra_scripts %}
+</body>
+</html>

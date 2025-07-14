@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Products - Moohaar{% endblock title %}
+
+{% block content %}
+<div class="store-admin-wrapper">
+    
+    {# Store Admin Sidebar Navigation #}
+    <aside class="store-admin-sidebar">
+        <div class="store-sidebar-header">
+            <h4 class="store-sidebar-title">{{ store.name }}</h4>
+            <a href="{% url 'storefront:store_home' store_id=store.id %}" class="store-sidebar-link" target="_blank" title="View your live public-facing store in a new tab">View Live Store</a>
+        </div>
+        <nav class="store-sidebar-nav">
+            <a href="{% url 'stores:store_detail' store_id=store.id %}" class="store-nav-link"><span>📊</span> Overview</a>
+            <a href="{% url 'stores:product_list' store_id=store.id %}" class="store-nav-link active"><span>📦</span> Products</a>
+            <a href="#" class="store-nav-link disabled"><span>🛒</span> Orders <span class="soon-badge">Soon</span></a>
+            <a href="#" class="store-nav-link disabled"><span>🎨</span> Customize Theme <span class="soon-badge">Soon</span></a>
+            <a href="{% url 'stores:select_theme' store_id=store.id %}" class="store-nav-link"><span>🖼️</span> Change Theme</a>
+            <a href="#" class="store-nav-link disabled"><span>⚙️</span> Settings <span class="soon-badge">Soon</span></a>
+        </nav>
+    </aside>
+
+    {# Main Content Area for Product Management #}
+    <div class="store-admin-main-content">
+        <div class="content-header">
+            <div class="header-left">
+                <h1 class="content-title">Products</h1>
+                <p class="content-subtitle">Manage all products for your store: <strong>{{ store.name }}</strong></p>
+            </div>
+            <div class="header-right">
+                 <a href="{% url 'stores:add_product' store_id=store.id %}" class="button button-primary-themed">Add Product</a>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <div class="table-controls">
+                <form method="get" class="search-form">
+                    <input type="text" name="q" value="{{ search_query|default:'' }}" placeholder="Search products...">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="table-responsive-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" aria-label="Select all products"></th>
+                            <th colspan="2">Product</th>
+                            <th>Status</th>
+                            <th>Inventory</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <td><input type="checkbox" aria-label="Select product {{ product.name }}"></td>
+                            <td>
+                                {% if product.image and product.image.url %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="table-product-image">
+                                {% else %}
+                                    <div class="table-product-image placeholder-thumb"></div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'stores:edit_product' store_id=store.id product_id=product.id %}" class="table-main-link">{{ product.name }}</a>
+                            </td>
+                            <td>
+                                {% if product.is_available %}
+                                    <span class="status-badge active">Active</span>
+                                {% else %}
+                                    <span class="status-badge inactive">Draft</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ product.stock_quantity }} in stock</td>
+                            <td>{{ product.price }} PKR</td>
+                            <td>
+                                <div class="action-buttons-table">
+                                    <a href="{% url 'stores:edit_product' store_id=store.id product_id=product.id %}" class="button button-small-icon" title="Edit">✏️</a>
+                                    <a href="{% url 'stores:delete_product' store_id=store.id product_id=product.id %}" class="button button-small-icon button-danger" title="Delete">🗑️</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center py-4">You haven't added any products yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if products.has_other_pages %}
+            <div class="pagination">
+                <div class="pagination-links">
+                    {% if products.has_previous %}
+                        <a href="?page=1{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">&laquo; First</a>
+                        <a href="?page={{ products.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">‹ Previous</a>
+                    {% endif %}
+                </div>
+                <span class="page-current">
+                    Page {{ products.number }} of {{ products.paginator.num_pages }}.
+                </span>
+                 <div class="pagination-links">
+                    {% if products.has_next %}
+                        <a href="?page={{ products.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">Next ›</a>
+                        <a href="?page={{ products.paginator.num_pages }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-link">Last &raquo;</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

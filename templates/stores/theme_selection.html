@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }} - Moohaar{% endblock title %}
+
+{% block extra_head %}
+    {# Link to the new, separate CSS file for this page #}
+    <link rel="stylesheet" href="{% static 'css/theme_selection_styles.css' %}">
+{% endblock extra_head %}
+
+{% block content %}
+<div class="theme-selection-page">
+    <div class="dashboard-header">
+        <h2>{{ page_title }}</h2>
+        <p>Choose the look and feel for your store: <strong>{{ store.name }}</strong></p>
+    </div>
+
+    <div class="theme-grid">
+        <form method="post">
+            {% csrf_token %}
+            {% for theme in themes %}
+            <div class="theme-card {% if store.active_theme == theme %}active-theme{% endif %}">
+                <div class="theme-preview-image">
+                    {% if theme.preview_image and theme.preview_image.url %}
+                        <img src="{{ theme.preview_image.url }}" alt="{{ theme.name }} Preview">
+                    {% else %}
+                        <div class="placeholder-preview">
+                            <span>No Preview Available</span>
+                        </div>
+                    {% endif %}
+                    {% if store.active_theme == theme %}
+                    <div class="active-badge">Currently Active</div>
+                    {% endif %}
+                </div>
+                <div class="theme-info">
+                    <h4>{{ theme.name }}</h4>
+                    <p>{{ theme.description|default:"No description." }}</p>
+                </div>
+                <div class="theme-actions">
+                    {% if store.active_theme == theme %}
+                        <button type="button" class="button button-manage" disabled>Currently Active</button>
+                    {% else %}
+                        <button type="submit" name="theme_id" value="{{ theme.id }}" class="button">Select Theme</button>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p>There are currently no themes available to choose from.</p>
+            {% endfor %}
+        </form>
+    </div>
+</div>
+{% endblock content %}

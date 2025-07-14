@@ -1,0 +1,153 @@
+{% extends "themes/mini_shop/mini_shop_base.html" %}
+{% load static %}
+
+{% block main_content %}
+    <!-- Start Banner Hero -->
+    <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></li>
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></li>
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="{% static 'themes/mini_shop/assets/img/banner_img_01.jpg' %}" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left align-self-center">
+                                <h1 class="h1 text-success"><b>{{ store.name }}</b></h1>
+                                <h3 class="h2">{{ store.tagline|default:"Welcome to our store" }}</h3>
+                                <p>
+                                    {{ store.description|default:"Discover our amazing products and great deals!" }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="{% static 'themes/mini_shop/assets/img/banner_img_02.jpg' %}" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left">
+                                <h1 class="h1">Featured Products</h1>
+                                <h3 class="h2">Explore Our Collection</h3>
+                                <p>
+                                    Browse through our carefully curated selection of high-quality products.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="{% static 'themes/mini_shop/assets/img/banner_img_03.jpg' %}" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left">
+                                <h1 class="h1">Special Offers</h1>
+                                <h3 class="h2">Great Deals Await</h3>
+                                <p>
+                                    Don't miss out on our special offers and promotions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="prev">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="next">
+            <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
+    <!-- End Banner Hero -->
+
+    <!-- Start Categories of The Month -->
+    <section class="container py-5">
+        <div class="row text-center pt-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1">Featured Categories</h1>
+                <p>
+                    Explore our most popular product categories
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            {% for category in featured_categories|slice:":3" %}
+            <div class="col-12 col-md-4 p-5 mt-3">
+                {% if category.image %}
+                <a href="{% url 'storefront:category_products' store_id=store.id category=category %}">
+                    <img src="{{ category.image.url }}" class="rounded-circle img-fluid border">
+                </a>
+                {% else %}
+                <a href="{% url 'storefront:category_products' store_id=store.id category=category %}">
+                    <img src="{% static 'themes/mini_shop/assets/img/category_img_01.jpg' %}" class="rounded-circle img-fluid border">
+                </a>
+                {% endif %}
+                <h5 class="text-center mt-3 mb-3">{{ category }}</h5>
+                <p class="text-center"><a href="{% url 'storefront:category_products' store_id=store.id category=category %}" class="btn btn-success">Shop Now</a></p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <!-- End Categories of The Month -->
+
+    <!-- Start Featured Product -->
+    <section class="bg-light">
+        <div class="container py-5">
+            <div class="row text-center py-3">
+                <div class="col-lg-6 m-auto">
+                    <h1 class="h1">Featured Products</h1>
+                    <p>
+                        Check out our most popular products
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                {% for product in featured_products %}
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="{% url 'storefront:product_detail' store_id=store.id product_id=product.id %}">
+                            {% if product.images.first %}
+                            <img src="{{ product.images.first.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                            {% else %}
+                            <img src="{% static 'themes/mini_shop/assets/img/feature_prod_01.jpg' %}" class="card-img-top" alt="{{ product.name }}">
+                            {% endif %}
+                        </a>
+                        <div class="card-body">
+                            <ul class="list-unstyled d-flex justify-content-between">
+                                <li>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-muted fa fa-star"></i>
+                                </li>
+                                <li class="text-muted text-right">${{ product.price }}</li>
+                            </ul>
+                            <a href="{% url 'storefront:product_detail' store_id=store.id product_id=product.id %}" class="h2 text-decoration-none text-dark">{{ product.name }}</a>
+                            <p class="card-text">
+                                {{ product.description|truncatewords:20 }}
+                            </p>
+                            <p class="text-muted">Reviews (24)</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- End Featured Product -->
+{% endblock %}

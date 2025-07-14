@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Moohaar{% endblock title %}</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    {# Link to your new dashboard stylesheet #}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    
+    {% block extra_head %}{% endblock extra_head %}
+</head>
+<body data-theme="light">
+
+    <div class="platform-wrapper">
+        <aside class="platform-sidebar">
+            <div class="sidebar-header">
+                <a href="{% url 'platform_home' %}" class="sidebar-logo-text">Moohaar</a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="{% url 'user_dashboard' %}" class="sidebar-link active">
+                    <span class="icon">🏠</span> Home
+                </a>
+                <a href="#" class="sidebar-link disabled">
+                    <span class="icon">🛒</span> Orders <span class="badge soon">Soon</span>
+                </a>
+                <a href="#" class="sidebar-link disabled">
+                    <span class="icon">📦</span> Products <span class="badge soon">Soon</span>
+                </a>
+                <a href="#" class="sidebar-link disabled">
+                    <span class="icon">👥</span> Customers <span class="badge soon">Soon</span>
+                </a>
+                <a href="#" class="sidebar-link disabled">
+                    <span class="icon">📊</span> Analytics <span class="badge soon">Soon</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                 <button class="theme-toggle-button" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
+                    <span class="icon-light">☀️ Light</span>
+                    <span class="icon-dark" style="display:none;">🌙 Dark</span>
+                </button>
+                <a href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();" class="sidebar-link logout-link"><span>Logout</span></a>
+            </div>
+        </aside>
+        <div class="platform-main-content">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% block content %}{% endblock content %}
+        </div>
+    </div>
+    <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+        {% csrf_token %}
+    </form>
+    
+    <script>
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        
+        function applyPlatformTheme(theme) {
+            htmlElement.setAttribute('data-theme', theme); 
+            localStorage.setItem('platformTheme', theme); 
+            if (themeToggleButton) { 
+                const lightIcon = themeToggleButton.querySelector('.icon-light');
+                const darkIcon = themeToggleButton.querySelector('.icon-dark');
+                if (lightIcon && darkIcon) {
+                    if (theme === 'dark') {
+                        lightIcon.style.display = 'none'; 
+                        darkIcon.style.display = 'flex';
+                    } else { 
+                        lightIcon.style.display = 'flex';
+                        darkIcon.style.display = 'none'; 
+                    }
+                }
+            }
+        }
+        
+        let preferredPlatformTheme = localStorage.getItem('platformTheme');
+        if (!preferredPlatformTheme) {
+            preferredPlatformTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        applyPlatformTheme(preferredPlatformTheme);
+
+        if (themeToggleButton) { 
+            themeToggleButton.addEventListener('click', () => {
+                const currentTheme = htmlElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                applyPlatformTheme(newTheme);
+            });
+        }
+    </script>
+    {% block extra_scripts %}{% endblock extra_scripts %}
+</body>
+</html>

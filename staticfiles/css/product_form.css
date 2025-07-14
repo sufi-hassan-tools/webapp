@@ -1,0 +1,39 @@
+/* static/css/product_form.css */
+
+.form-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem 1.5rem;
+}
+
+.form-span-all {
+    grid-column: 1 / -1;
+}
+
+.form-field-wrapper label {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.form-field-wrapper input[type="text"],
+.form-field-wrapper input[type="number"],
+.form-field-wrapper input[type="file"],
+.form-field-wrapper textarea {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--input-border-color);
+    border-radius: 4px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+.form-field-wrapper textarea {
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+} 

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{ page_title|default:"Manage Product" }} - Moohaar{% endblock title %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/product_form.css' %}">
+{% endblock extra_head %}
+
+{% block content %}
+<div class="content-header">
+    <h1 class="content-title">{{ page_title }}</h1>
+    <p class="content-subtitle">Fill out your product's details below for store: <strong>{{ store.name }}</strong></p>
+</div>
+
+<form method="post" enctype="multipart/form-data" class="content-card form-layout">
+    {% csrf_token %}
+
+    {% if form.non_field_errors or form.errors %}
+        <div class="form-error-message form-span-all">
+            {% if form.non_field_errors %}
+                <ul class="errorlist">
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>Please correct the errors highlighted below.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <div class="form-field-wrapper">
+        <label for="{{ form.name.id_for_label }}">Product Name</label>
+        {{ form.name }}
+        {% if form.name.errors %}<ul class="errorlist">{% for error in form.name.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+
+    <div class="form-field-wrapper">
+        <label for="{{ form.sku.id_for_label }}">SKU / Code</label>
+        {{ form.sku }}
+        {% if form.sku.errors %}<ul class="errorlist">{% for error in form.sku.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+
+    <div class="form-field-wrapper">
+        <label for="{{ form.category.id_for_label }}">Category</label>
+        {{ form.category }}
+        {% if form.category.errors %}<ul class="errorlist">{% for error in form.category.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+
+    <div class="form-field-wrapper">
+        <label for="{{ form.price.id_for_label }}">Price (PKR)</label>
+        {{ form.price }}
+        {% if form.price.errors %}<ul class="errorlist">{% for error in form.price.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+
+    <div class="form-field-wrapper">
+        <label for="{{ form.weight.id_for_label }}">Weight (kg)</label>
+        {{ form.weight }}
+        {% if form.weight.errors %}<ul class="errorlist">{% for error in form.weight.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+    
+    <div class="form-field-wrapper form-span-all">
+        <label for="{{ form.description.id_for_label }}">Description</label>
+        {{ form.description }}
+        {% if form.description.errors %}<ul class="errorlist">{% for error in form.description.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+
+    <div class="form-field-wrapper">
+        <label for="{{ form.stock_quantity.id_for_label }}">Stock Quantity</label>
+        {{ form.stock_quantity }}
+        {% if form.stock_quantity.errors %}<ul class="errorlist">{% for error in form.stock_quantity.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+    
+    <div class="form-field-wrapper">
+        <label for="{{ form.image.id_for_label }}">Main Product Image</label>
+        {% if form.instance.image and form.instance.image.url %}
+            <p class="current-image-notice">Current: <a href="{{ form.instance.image.url }}" target="_blank">{{ form.instance.image.name|truncatechars:30 }}</a></p>
+        {% endif %}
+        {{ form.image }}
+        {% if form.image.errors %}<ul class="errorlist">{% for error in form.image.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+
+    <div class="form-field-wrapper form-span-all">
+        <label for="{{ form.gallery_images.id_for_label }}">Gallery Images (optional, you can select multiple)</label>
+        {{ form.gallery_images }}
+        {% if form.gallery_images.errors %}<ul class="errorlist">{% for error in form.gallery_images.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+
+    <div class="form-actions form-span-all">
+        <a href="{% url 'stores:store_detail' store_id=store.id %}" class="button button-secondary-themed">Cancel</a>
+        <button type="submit" class="button button-primary-themed">Save Product</button>
+    </div>
+</form>
+{% endblock content %}

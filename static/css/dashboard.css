@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  background: #121212;
+  color: white;
+}
+
+.sidebar {
+  width: 220px;
+  background: #1f1f1f;
+  padding: 20px;
+  height: 100vh;
+  position: fixed;
+}
+
+.sidebar .logo {
+  font-size: 24px;
+  margin-bottom: 30px;
+  color: #00ffc6;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.sidebar ul li i {
+  margin-right: 10px;
+}
+
+.sidebar ul li.active {
+  color: white;
+  font-weight: bold;
+}
+
+.toggle-theme {
+  margin-top: 50px;
+  background: #2b2b2b;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.dashboard {
+  margin-left: 240px;
+  padding: 30px;
+  flex: 1;
+}
+
+.top-cards {
+  display: flex;
+  gap: 20px;
+}
+
+.card {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.chart-section {
+  margin-top: 40px;
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.sales-breakdown {
+  margin-top: 30px;
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 12px;
+}

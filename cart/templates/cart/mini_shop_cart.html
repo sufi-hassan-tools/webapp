@@ -1,0 +1,104 @@
+{% load static %}
+
+<!-- Start Content -->
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="h2 pb-4">Shopping Cart</h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            {% if cart %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart %}
+                            {% with product=item.product %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        {% if product.images.first %}
+                                            <img src="{{ product.images.first.image.url }}" class="img-fluid" style="max-width: 50px; margin-right: 10px;" alt="{{ product.name }}">
+                                        {% else %}
+                                            <img src="{% static 'themes/mini_shop/assets/img/shop_01.jpg' %}" class="img-fluid" style="max-width: 50px; margin-right: 10px;" alt="{{ product.name }}">
+                                        {% endif %}
+                                        <span>{{ product.name }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ item.price }} PKR</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.total_price }} PKR</td>
+                                <td>
+                                    <form action="{% url 'cart:cart_remove' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fa fa-trash"></i> Remove
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endwith %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <a href="{% url 'storefront:store_home' store_id=store.id %}" class="btn btn-outline-success">
+                            <i class="fa fa-arrow-left"></i> Continue Shopping
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <p>Your cart is empty.</p>
+                    <a href="{% url 'storefront:store_home' store_id=store.id %}" class="btn btn-success mt-2">
+                        <i class="fa fa-shopping-cart"></i> Go Shopping
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        
+        {% if cart %}
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4>Cart Summary</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal:</span>
+                        <span>{{ cart.get_total_price }} PKR</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Shipping:</span>
+                        <span>FREE</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-4">
+                        <strong>Total:</strong>
+                        <strong>{{ cart.get_total_price }} PKR</strong>
+                    </div>
+                    
+                    <a href="{% url 'orders:order_create' %}" class="btn btn-success btn-block">
+                        <i class="fa fa-credit-card"></i> Proceed to Checkout
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<!-- End Content --> 

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }} - Moohaar{% endblock title %}
+
+{% block content %}
+<div class="theme-selection-page">
+    <div class="dashboard-header">
+        <h2>{{ page_title }}</h2>
+        <p>Choose the look and feel for your store: <strong>{{ store.name }}</strong></p>
+    </div>
+
+    <div class="theme-grid">
+        {% for theme in themes %}
+        <div class="theme-card {% if store.active_theme == theme %}active-theme{% endif %}">
+            <div class="theme-preview-image">
+                {% if theme.preview_image and theme.preview_image.url %}
+                    <img src="{{ theme.preview_image.url }}" alt="{{ theme.name }} Preview">
+                {% else %}
+                    <div class="placeholder-preview">
+                        <span>No Preview Available</span>
+                    </div>
+                {% endif %}
+                <div class="active-badge">Currently Active</div>
+            </div>
+            <div class="theme-info">
+                <h4>{{ theme.name }}</h4>
+                <p>{{ theme.description|default:"No description." }}</p>
+            </div>
+            <div class="theme-actions">
+                {% if store.active_theme == theme %}
+                    <a href="#" class="button button-manage">Customize Theme</a> {# Placeholder for future edit link #}
+                {% else %}
+                    {# This link will go to the view that applies the theme - we'll create this view next #}
+                    <a href="#" class="button">Select Theme</a>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p>There are currently no themes available to choose from.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

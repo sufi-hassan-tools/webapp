@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login - Moohaar{% endblock title %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/auth_styles.css' %}">
+{% endblock extra_head %}
+
+{% block auth_content %}
+<div class="auth-page-wrapper">
+    <div class="auth-form-card">
+        <h2>Login to Your Account</h2>
+
+        {% if form.non_field_errors %}
+            <div class="form-error-message">
+                <ul class="errorlist">
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <form method="post" class="auth-form" action="{% url 'login' %}">
+            {% csrf_token %}
+            
+            <div class="form-field-wrapper">
+                <label for="{{ form.username.id_for_label }}">Email Address:</label>
+                {{ form.username }}
+                {% if form.username.errors %}<div class="errorlist">{{ form.username.errors }}</div>{% endif %}
+            </div>
+            
+            <div class="form-field-wrapper">
+                <label for="{{ form.password.id_for_label }}">Password:</label>
+                {{ form.password }}
+                {% if form.password.errors %}<div class="errorlist">{{ form.password.errors }}</div>{% endif %}
+            </div>
+            
+            <input type="hidden" name="next" value="{{ next }}">
+            <button type="submit" class="button">Login</button>
+        </form>
+
+        <div class="form-links">
+            {# --- NEW LINK ADDED HERE --- #}
+            <p><a href="{% url 'password_reset' %}">Forgot password?</a></p>
+            <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock auth_content %}
