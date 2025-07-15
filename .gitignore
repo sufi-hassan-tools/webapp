@@ -12,6 +12,7 @@ media/
 
 # Local database
 *.sqlite3
+db.sqlite3
 
 # Environment variables file
 .env
