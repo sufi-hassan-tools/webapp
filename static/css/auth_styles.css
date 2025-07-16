@@ -1,6 +1,11 @@
 /* static/css/auth_styles.css */
 
-/* Using variables defined in the main style.css (loaded via base.html) */
+/*
+    This file styles the Login and Register pages.
+    It uses variables (--primary-blue, --surface-color, etc.) defined in your main `style.css`
+    which is loaded by the `base.html` template.
+*/
+
 .auth-page-wrapper {
     display: flex;
     flex-direction: column;
@@ -28,7 +33,7 @@
     font-size: 1.7em;
 }
 
-.auth-form-card form {
+.auth-form { /* This class is on the <form> tag itself */
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
@@ -91,6 +96,7 @@ html[data-theme="dark"] .form-field-wrapper input:focus {
     background-color: var(--secondary-orange);
     color: var(--text-light);
     border: none;
+    margin-top: 0.5rem;
 }
 .auth-form-card .button:hover {
     background-color: #e06520;

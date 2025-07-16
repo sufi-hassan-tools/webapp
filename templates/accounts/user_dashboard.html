@@ -21,69 +21,7 @@
 {% block content %}
 <div class="animated fadeIn">
     <div class="row">
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <div class="stat-widget-five">
-                        <div class="stat-icon dib flat-color-1"><i class="pe-7s-cash"></i></div>
-                        <div class="stat-content">
-                            <div class="text-left dib">
-                                <div class="stat-text">$<span class="count">0</span></div>
-                                <div class="stat-heading">Revenue</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <div class="stat-widget-five">
-                        <div class="stat-icon dib flat-color-2"><i class="pe-7s-cart"></i></div>
-                        <div class="stat-content">
-                            <div class="text-left dib">
-                                <div class="stat-text"><span class="count">0</span></div>
-                                <div class="stat-heading">Sales</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <div class="stat-widget-five">
-                        <div class="stat-icon dib flat-color-3"><i class="pe-7s-browser"></i></div>
-                        <div class="stat-content">
-                            <div class="text-left dib">
-                                <div class="stat-text"><span class="count">0</span></div>
-                                <div class="stat-heading">Visitors</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <div class="stat-widget-five">
-                        <div class="stat-icon dib flat-color-4"><i class="pe-7s-users"></i></div>
-                        <div class="stat-content">
-                            <div class="text-left dib">
-                                <div class="stat-text"><span class="count">1</span></div>
-                                <div class="stat-heading">Clients</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {# ... your existing 4 stat widgets here ... #}
     </div>
     <div class="row">
         <div class="col-lg-12">
@@ -92,31 +30,9 @@
                     <h4 class="box-title">Traffic </h4>
                 </div>
                 <div class="row">
-                    <div class="col-lg-8">
-                        <div class="card-body">
-                            <div id="traffic-chart" class="traffic-chart"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="card-body">
-                            <div class="progress-box progress-1">
-                                <h4 class="por-title">Visits</h4>
-                                <div class="por-txt">96,930 Users (40%)</div>
-                                <div class="progress mb-2" style="height: 5px;"><div class="progress-bar bg-flat-color-1" role="progressbar" style="width: 40%;"></div></div>
-                            </div>
-                            <div class="progress-box progress-2">
-                                <h4 class="por-title">Bounce Rate</h4>
-                                <div class="por-txt">3,220 Users (24%)</div>
-                                <div class="progress mb-2" style="height: 5px;"><div class="progress-bar bg-flat-color-2" role="progressbar" style="width: 24%;"></div></div>
-                            </div>
-                            <div class="progress-box progress-2">
-                                <h4 class="por-title">Unique Visitors</h4>
-                                <div class="por-txt">29,658 Users (60%)</div>
-                                <div class="progress mb-2" style="height: 5px;"><div class="progress-bar bg-flat-color-3" role="progressbar" style="width: 60%;"></div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <div class="col-lg-8"><div class="card-body"><div id="traffic-chart" class="traffic-chart"></div></div></div>
+                    <div class="col-lg-4"><div class="card-body">{# ... progress bars ... #}</div></div>
+                </div> 
                 <div class="card-body"></div>
             </div>
         </div>
@@ -126,45 +42,41 @@
         <div class="row">
             <div class="col-xl-12">
                 <div class="card">
-                    <div class="card-body">
-                        <h4 class="box-title">Recent Orders </h4>
-                    </div>
-                    <div class="card-body--">
-                        <div class="table-stats order-table ov-h">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th class="serial">#</th>
-                                        <th>Order ID</th>
-                                        <th>Name</th>
-                                        <th>Product</th>
-                                        <th>Quantity</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {# This part will be dynamic later #}
-                                    <tr>
-                                        <td class="serial">1.</td>
-                                        <td> #5469 </td>
-                                        <td><span class="name">Louis Stanley</span></td>
-                                        <td><span class="product">iMax</span></td>
-                                        <td><span class="count">231</span></td>
-                                        <td><span class="badge badge-complete">Complete</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="serial">2.</td>
-                                        <td> #5468 </td>
-                                        <td><span class="name">Gregory Dixon</span></td>
-                                        <td><span class="product">iPad</span></td>
-                                        <td><span class="count">250</span></td>
-                                        <td><span class="badge badge-pending">Pending</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <div class="card-body"><h4 class="box-title">Recent Orders </h4></div>
+                    <div class="card-body--"><div class="table-stats order-table ov-h"><table class="table">
+                        {# ... existing orders table ... #}
+                    </table></div></div>
                 </div> 
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header"><h4>Pie Chart</h4></div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-2"><span class="pie" data-peity='{ "fill": ["#13dafe", "#f2f2f2"]}'>1/4</span></div>
+                        <div class="col-lg-2"><span class="pie" data-peity='{ "fill": ["#6164C1", "#f2f2f2"]}'>236/360</span></div>
+                        <div class="col-lg-2"><span class="pie" data-peity='{ "fill": ["#F96262", "#f2f2f2"]}'>0.45/1.561</span></div>
+                        <div class="col-lg-2"><span class="pie" data-peity='{ "fill": ["#99D683", "#f2f2f2"]}'>1,4</span></div>
+                        <div class="col-lg-2"><span class="pie" data-peity='{ "fill": ["#FFCA4A", "#f2f2f2"]}'>366,100</span></div>
+                        <div class="col-lg-2"><span class="pie" data-peity='{ "fill": ["#4C5667", "#f2f2f2"]}'>0.52,1.041</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header"><h4>Line Charts</h4></div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4"><span class="peity-line" data-width="100%">6,2,8,4,3,8,1,3,6,5,9,2,8,1,4,8,9,8,2,1</span></div>
+                        <div class="col-lg-4"><span class="peity-line" data-width="100%">6,2,8,4,-3,8,1,-3,6,-5,9,2,-8,1,4,8,9,8,2,1</span></div>
+                        <div class="col-lg-4"><span class="peity-line" data-width="100%">6,2,8,4,3,8,1,3,6,5,9,2,8,1,4,8,9,8,2,1</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -173,9 +85,6 @@
 
 
 {% block extra_scripts %}
-    <script src="https://cdn.jsdelivr.net/npm/chartist@0.11.0/dist/chartist.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartist-plugin-legend@0.6.2/chartist-plugin-legend.min.js"></script>
-    
     <script>
         jQuery(document).ready(function($) {
             "use strict";
@@ -183,20 +92,14 @@
                 var chart = new Chartist.Line('#traffic-chart', {
                   labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                   series: [
-                  [0, 18000, 35000,  25000,  22000,  0],
-                  [0, 33000, 15000,  20000,  15000,  300],
-                  [0, 15000, 28000,  15000,  30000,  5000]
+                  [0, 180, 350,  250,  220,  0],
+                  [0, 330, 150,  200,  150,  30],
+                  [0, 150, 280,  150,  300,  50]
                   ]
               }, {
-                  low: 0,
-                  showArea: true,
-                  showLine: false,
-                  showPoint: false,
-                  fullWidth: true,
-                  axisX: {
-                    showGrid: true
-                }
-            });
+                  low: 0, showArea: true, showLine: false, showPoint: false,
+                  fullWidth: true, axisX: { showGrid: true }
+              });
                 chart.on('draw', function(data) {
                     if(data.type === 'line' || data.type === 'area') {
                         data.element.animate({
@@ -213,4 +116,6 @@
             }
         });
     </script>
+    
+    <script src="{% static 'user_dashboard/assets/js/init/peitychart-init.js' %}"></script>
 {% endblock extra_scripts %}

@@ -6,79 +6,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Moohaar{% endblock title %}</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Global Theme Styles -->
+    <link rel="stylesheet" href="{% static 'css/theme_moohaar_default.css' %}">
+    <link rel="stylesheet" href="{% static 'css/theme_selection_styles.css' %}">
     
-    {# Link to your new dashboard stylesheet #}
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-    
+    <!-- Page Specific Styles -->
     {% block extra_head %}{% endblock extra_head %}
 </head>
-<body data-theme="light">
+<body class="moohaar-theme-wrapper" data-theme="light">
 
-    <div class="platform-wrapper">
-        <aside class="platform-sidebar">
-            <div class="sidebar-header">
-                <a href="{% url 'platform_home' %}" class="sidebar-logo-text">Moohaar</a>
+    {% if user.is_authenticated %}
+        <!-- Logged-in view with sidebar -->
+        <div class="platform-wrapper">
+            <aside class="platform-sidebar">
+                <div class="sidebar-header">
+                    <a href="{% url 'platform_home' %}" class="sidebar-logo-text">Moohaar</a>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="{% url 'user_dashboard' %}" class="sidebar-link"><span>🏠</span> Dashboard</a>
+                    <a href="#" class="sidebar-link"><span>Billing</span> (soon)</a>
+                    <a href="#" class="sidebar-link"><span>Settings</span> (soon)</a>
+                    <a href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();" class="sidebar-link"><span>Logout</span></a>
+                </nav>
+                <div class="sidebar-footer">
+                     <button class="theme-toggle-button" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
+                        <span class="icon-light" style="display:none;">☀️</span>
+                        <span class="icon-dark" style="display:none;">🌙</span>
+                    </button>
+                </div>
+            </aside>
+            <div class="platform-main-content-wrapper">
+                <main class="container">
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li class="{{ message.tags }}">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% block content %}{% endblock content %}
+                </main>
             </div>
-            <nav class="sidebar-nav">
-                <a href="{% url 'user_dashboard' %}" class="sidebar-link active">
-                    <span class="icon">🏠</span> Home
-                </a>
-                <a href="#" class="sidebar-link disabled">
-                    <span class="icon">🛒</span> Orders <span class="badge soon">Soon</span>
-                </a>
-                <a href="#" class="sidebar-link disabled">
-                    <span class="icon">📦</span> Products <span class="badge soon">Soon</span>
-                </a>
-                <a href="#" class="sidebar-link disabled">
-                    <span class="icon">👥</span> Customers <span class="badge soon">Soon</span>
-                </a>
-                <a href="#" class="sidebar-link disabled">
-                    <span class="icon">📊</span> Analytics <span class="badge soon">Soon</span>
-                </a>
-            </nav>
-            <div class="sidebar-footer">
-                 <button class="theme-toggle-button" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
-                    <span class="icon-light">☀️ Light</span>
-                    <span class="icon-dark" style="display:none;">🌙 Dark</span>
-                </button>
-                <a href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();" class="sidebar-link logout-link"><span>Logout</span></a>
-            </div>
-        </aside>
-        <div class="platform-main-content">
-            {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li class="{{ message.tags }}">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            {% block content %}{% endblock content %}
         </div>
-    </div>
-    <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-        {% csrf_token %}
-    </form>
-    
+        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+            {% csrf_token %}
+        </form>
+    {% else %}
+        <!-- Logged-out view with simple header/footer for auth pages -->
+        <header class="site-header">
+            <div class="container">
+                <div class="logo-area">
+                    <a href="{% url 'platform_home' %}" class="logo-text">Moohaar</a>
+                    <p class="tagline">ویب سائٹ آج اور ابھی</p>
+                </div>
+                <nav class="main-nav">
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'register' %}">Sign Up</a>
+                </nav>
+            </div>
+        </header>
+        <main class="container">
+            {% block auth_content %}{% endblock auth_content %}
+        </main>
+        <footer class="site-footer">
+            <div class="container">
+                <p>&copy; {% now "Y" %} Moohaar</p>
+            </div>
+        </footer>
+    {% endif %}
+
+    <!-- Theme Toggle Script -->
     <script>
         const themeToggleButton = document.getElementById('theme-toggle');
         const htmlElement = document.documentElement;
         
         function applyPlatformTheme(theme) {
-            htmlElement.setAttribute('data-theme', theme); 
-            localStorage.setItem('platformTheme', theme); 
-            if (themeToggleButton) { 
+            htmlElement.setAttribute('data-theme', theme);
+            localStorage.setItem('platformTheme', theme);
+            if (themeToggleButton) {
                 const lightIcon = themeToggleButton.querySelector('.icon-light');
                 const darkIcon = themeToggleButton.querySelector('.icon-dark');
                 if (lightIcon && darkIcon) {
                     if (theme === 'dark') {
-                        lightIcon.style.display = 'none'; 
-                        darkIcon.style.display = 'flex';
-                    } else { 
-                        lightIcon.style.display = 'flex';
-                        darkIcon.style.display = 'none'; 
+                        lightIcon.style.display = 'inline';
+                        darkIcon.style.display = 'none';
+                    } else {
+                        lightIcon.style.display = 'none';
+                        darkIcon.style.display = 'inline';
                     }
                 }
             }
@@ -90,7 +104,7 @@
         }
         applyPlatformTheme(preferredPlatformTheme);
 
-        if (themeToggleButton) { 
+        if (themeToggleButton) {
             themeToggleButton.addEventListener('click', () => {
                 const currentTheme = htmlElement.getAttribute('data-theme');
                 const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
