@@ -1,7 +1,7 @@
 # This is the full code for mystore_project/stores/forms.py
 
 from django import forms
-from .models import Store, Product, ProductImage # Make sure ProductImage is imported
+from .models import Store, Product
 
 class CustomClearableFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True

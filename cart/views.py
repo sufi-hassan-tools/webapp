@@ -2,7 +2,7 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from stores.models import Product, Store
+from stores.models import Product
 from .cart import Cart
 from .forms import CartAddProductForm # Import the new form
 
@@ -21,8 +21,7 @@ def cart_add(request, product_id):
             override_quantity=cd['override']
         )
 
-    # Get the store from the product
-    store = product.store
+    # Redirect to the cart detail page
     return redirect('cart:cart_detail')
 
 @require_POST
