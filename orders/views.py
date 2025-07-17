@@ -5,7 +5,6 @@ from django.contrib import messages
 from .models import OrderItem
 from .forms import OrderCreateForm
 from cart.cart import Cart
-from django.contrib import messages
 
 def order_create(request):
     cart = Cart(request)
