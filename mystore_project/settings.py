@@ -22,9 +22,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # For local development, your .env file should set DEBUG=True
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-# When you deploy to PythonAnywhere, you must add your domain here,
-# for example: ALLOWED_HOSTS = ['your-username.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'moohaar.onrender.com']
+
 
 
 # Application definition
