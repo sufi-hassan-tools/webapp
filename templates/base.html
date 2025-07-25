@@ -14,20 +14,50 @@
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 
     <style>
-        body.light-mode { background: #fff; color: #000; }
         body.dark-mode { background: #000; color: #fff; }
-        .light-dark-toggle {
+        .theme-switch {
             position: fixed;
             top: 1rem;
             right: 1rem;
             z-index: 1000;
         }
+        .theme-switch input { display: none; }
+        .theme-switch .slider {
+            width: 40px;
+            height: 20px;
+            background: var(--theme-border-light);
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .theme-switch .slider::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 2px;
+            left: 2px;
+            border-radius: 50%;
+            background: var(--theme-primary-blue);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        .theme-switch input:checked + .slider::before {
+            transform: translateX(20px);
+            background: var(--theme-secondary-orange);
+        }
+        body.dark-mode .theme-switch .slider {
+            background: var(--theme-primary-blue);
+        }
     </style>
 
     {% block extra_head %}{% endblock extra_head %}
 </head>
-<body class="moohaar-theme-wrapper light-mode">
-    <button id="light-dark-toggle" class="light-dark-toggle" aria-label="Toggle light and dark mode">🌓</button>
+<body class="moohaar-theme-wrapper">
+    <label class="theme-switch" for="theme-toggle">
+        <input type="checkbox" id="theme-toggle">
+        <span class="slider"></span>
+    </label>
 
     {% if user.is_authenticated %}
         <!-- Logged-in view with sidebar -->
@@ -85,23 +115,26 @@
 
     <script>
         (function() {
-            const toggle = document.getElementById('light-dark-toggle');
+            const toggle = document.getElementById('theme-toggle');
             const body = document.body;
 
-            function applyTheme(theme) {
-                body.classList.remove('light-mode', 'dark-mode');
-                body.classList.add(`${theme}-mode`);
-                localStorage.setItem('preferredTheme', theme);
+            const stored = localStorage.getItem('preferredTheme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const initial = stored || (prefersDark ? 'dark' : 'light');
+            if (initial === 'dark') {
+                body.classList.add('dark-mode');
+                if (toggle) toggle.checked = true;
             }
 
-            const stored = localStorage.getItem('preferredTheme');
-            const initial = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            applyTheme(initial);
-
             if (toggle) {
-                toggle.addEventListener('click', function () {
-                    const newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
-                    applyTheme(newTheme);
+                toggle.addEventListener('change', function () {
+                    if (this.checked) {
+                        body.classList.add('dark-mode');
+                        localStorage.setItem('preferredTheme', 'dark');
+                    } else {
+                        body.classList.remove('dark-mode');
+                        localStorage.setItem('preferredTheme', 'light');
+                    }
                 });
             }
         })();

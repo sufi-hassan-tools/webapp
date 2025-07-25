@@ -11,6 +11,43 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="{% static 'css/theme_moohaar_default.css' %}">
+
+    <style>
+        .theme-switch {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+        }
+        .theme-switch input { display: none; }
+        .theme-switch .slider {
+            width: 40px;
+            height: 20px;
+            background: var(--theme-border-light);
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .theme-switch .slider::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 2px;
+            left: 2px;
+            border-radius: 50%;
+            background: var(--theme-primary-blue);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        .theme-switch input:checked + .slider::before {
+            transform: translateX(20px);
+            background: var(--theme-secondary-orange);
+        }
+        body.dark-mode .theme-switch .slider {
+            background: var(--theme-primary-blue);
+        }
+    </style>
     
     {% block extra_head %}{% endblock extra_head %} {# This is where product_detail_styles.css will be linked #}
 </head>
@@ -44,10 +81,10 @@
                     {% else %}
                         <a href="{% url 'login' %}">Login</a> 
                     {% endif %}
-                    <button class="theme-toggle-button" id="storefront-theme-toggle-button" title="Toggle theme" aria-label="Toggle theme">
-                        <span class="icon-light" style="display:none;">☀️</span>
-                        <span class="icon-dark" style="display:none;">🌙</span>
-                    </button>
+                    <label class="theme-switch" for="storefront-theme-toggle">
+                        <input type="checkbox" id="storefront-theme-toggle">
+                        <span class="slider"></span>
+                    </label>
                 </nav>
                 <button class="mobile-menu-toggle" id="mobile-menu-toggle-button" aria-label="Open navigation menu" aria-expanded="false">
                     <span></span><span></span><span></span>
@@ -92,25 +129,30 @@
     {% endblock theme_footer %}
 
     <script>
-        const storefrontThemeToggleButton = document.getElementById('storefront-theme-toggle-button');
+        const storefrontThemeToggleButton = document.getElementById('storefront-theme-toggle');
         const mobileMenuToggleButton = document.getElementById('mobile-menu-toggle-button');
         const mobileNav = document.getElementById('mobile-navigation-menu');
         const bodyElementForTheme = document.body;
 
         function applyStorefrontTheme(theme) {
-            bodyElementForTheme.classList.remove('light-mode', 'dark-mode');
-            bodyElementForTheme.classList.add(`${theme}-mode`);
+            if (theme === 'dark') {
+                bodyElementForTheme.classList.add('dark-mode');
+                if (storefrontThemeToggleButton) storefrontThemeToggleButton.checked = true;
+            } else {
+                bodyElementForTheme.classList.remove('dark-mode');
+                if (storefrontThemeToggleButton) storefrontThemeToggleButton.checked = false;
+            }
             localStorage.setItem('storefrontTheme', theme);
         }
 
         const storedTheme = localStorage.getItem('storefrontTheme');
-        const initialTheme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
         applyStorefrontTheme(initialTheme);
 
         if (storefrontThemeToggleButton) {
-            storefrontThemeToggleButton.addEventListener('click', () => {
-                const newTheme = bodyElementForTheme.classList.contains('dark-mode') ? 'light' : 'dark';
-                applyStorefrontTheme(newTheme);
+            storefrontThemeToggleButton.addEventListener('change', () => {
+                applyStorefrontTheme(storefrontThemeToggleButton.checked ? 'dark' : 'light');
             });
         }
 

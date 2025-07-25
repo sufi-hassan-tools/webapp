@@ -2,9 +2,9 @@
 
 /* Define your theme's primary color */
 :root {
-    --primary-color: #4a90e2; /* A modern, friendly blue. Change it to your theme's color! */
-    --primary-hover-color: #357ABD;
-    --primary-color-rgb: 74, 144, 226; /* RGB version of the primary color for use in rgba() */
+    --primary-color: var(--theme-primary-blue);
+    --primary-hover-color: var(--theme-secondary-orange);
+    --primary-color-rgb: 41, 76, 116;
 }
 
 body {
@@ -34,13 +34,14 @@ body {
 
 .form-label {
     font-weight: 500;
-    color: #495057;
+    color: var(--primary-color);
 }
 
 .form-control, .form-select {
+    width: 100%;
     border-radius: 0.5rem;
     padding: 0.75rem 1rem;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--theme-input-border-color);
 }
 
 .form-control:focus, .form-select:focus {
