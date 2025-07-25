@@ -117,3 +117,25 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.product.name}"
+
+
+def generate_store_profile_id():
+    """Generate a unique 8-character alphanumeric ID for store profiles."""
+    import string, random
+    length = 8
+    chars = string.ascii_letters + string.digits
+    while True:
+        profile_id = ''.join(random.choice(chars) for _ in range(length))
+        if not StoreProfile.objects.filter(profile_id=profile_id).exists():
+            return profile_id
+
+
+class StoreProfile(models.Model):
+    store = models.OneToOneField(Store, on_delete=models.CASCADE, related_name='profile')
+    profile_id = models.CharField(max_length=8, unique=True, default=generate_store_profile_id)
+    name = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    whatsapp_number = models.CharField(max_length=20, blank=True, null=True)
+
+    def __str__(self):
+        return self.name

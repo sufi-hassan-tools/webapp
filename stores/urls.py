@@ -12,6 +12,7 @@ urlpatterns = [
     path('<uuid:store_id>/', views.store_detail, name='store_detail'),
     path('<uuid:store_id>/themes/', views.select_theme, name='select_theme'),
     path('<uuid:store_id>/themes/apply/', views.apply_theme, name='apply_theme'),
+    path('<uuid:store_id>/theme/', views.theme_page, name='theme_page'),
     path('<uuid:store_id>/products/', views.product_list, name='product_list'), # <-- NEW URL
 
     # Product Management URLs

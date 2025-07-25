@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.core.paginator import Paginator
 from .forms import StoreCreationForm, ProductForm 
-from .models import Store, Product, Theme 
+from .models import Store, Product, Theme, StoreProfile, generate_store_profile_id
 
 # --- STORE MANAGEMENT VIEWS ---
 
@@ -22,10 +22,17 @@ def create_store(request):
             store = form.save(commit=False)
             store.user = request.user      
             try:
-                store.save()               
-                messages.success(request, f'Store "{store.name}" created successfully! Now, choose a theme.')
-                return redirect('stores:select_theme', store_id=store.id)
-            except Exception as e: 
+                store.save()
+                StoreProfile.objects.create(
+                    store=store,
+                    name=store.name,
+                    phone_number=store.store_phone_number,
+                    whatsapp_number=store.store_whatsapp_number,
+                    profile_id=generate_store_profile_id()
+                )
+                messages.success(request, f'Store "{store.name}" created successfully!')
+                return redirect('stores:theme_page', store_id=store.id)
+            except Exception as e:
                 messages.error(request, f'Error creating store: {e}')
         else:
             messages.error(request, 'Please correct the errors below.')
@@ -73,6 +80,16 @@ def apply_theme(request, store_id):
             messages.error(request, 'No theme was selected.')
         return redirect('stores:select_theme', store_id=store.id)
     return redirect('user_dashboard')
+
+
+@login_required
+def theme_page(request, store_id):
+    store = get_object_or_404(Store, id=store_id, user=request.user)
+    context = {
+        'store': store,
+        'page_title': 'Theme Options'
+    }
+    return render(request, 'stores/theme_page.html', context)
 
 # --- PRODUCT MANAGEMENT VIEWS ---
 
