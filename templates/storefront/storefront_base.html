@@ -14,7 +14,7 @@
     
     {% block extra_head %}{% endblock extra_head %} {# This is where product_detail_styles.css will be linked #}
 </head>
-<body data-theme="light" class="moohaar-theme-wrapper"> 
+<body class="moohaar-theme-wrapper light-mode">
 
     {% block theme_header %}
     <header class="storefront-site-header">
@@ -95,16 +95,51 @@
         const storefrontThemeToggleButton = document.getElementById('storefront-theme-toggle-button');
         const mobileMenuToggleButton = document.getElementById('mobile-menu-toggle-button');
         const mobileNav = document.getElementById('mobile-navigation-menu');
-        const bodyElementForTheme = document.body; 
-        function applyStorefrontTheme(theme) { /* ... existing JS ... */ }
-        let preferredStorefrontTheme = localStorage.getItem('storefrontTheme');
-        if (!preferredStorefrontTheme) { preferredStorefrontTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
-        applyStorefrontTheme(preferredStorefrontTheme);
-        if (storefrontThemeToggleButton) { /* ... existing JS ... */ }
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => { if (!localStorage.getItem('storefrontTheme')) { applyStorefrontTheme(event.matches ? 'dark' : 'light'); } });
-        if (mobileMenuToggleButton && mobileNav) { /* ... existing JS ... */ }
-        document.addEventListener('DOMContentLoaded', function() { /* ... existing announcement slider JS ... */ });
-    </script> {# For brevity, I've collapsed the JS here, but ensure you have the full correct JS from before #}
+        const bodyElementForTheme = document.body;
+
+        function applyStorefrontTheme(theme) {
+            bodyElementForTheme.classList.remove('light-mode', 'dark-mode');
+            bodyElementForTheme.classList.add(`${theme}-mode`);
+            localStorage.setItem('storefrontTheme', theme);
+        }
+
+        const storedTheme = localStorage.getItem('storefrontTheme');
+        const initialTheme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        applyStorefrontTheme(initialTheme);
+
+        if (storefrontThemeToggleButton) {
+            storefrontThemeToggleButton.addEventListener('click', () => {
+                const newTheme = bodyElementForTheme.classList.contains('dark-mode') ? 'light' : 'dark';
+                applyStorefrontTheme(newTheme);
+            });
+        }
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (!localStorage.getItem('storefrontTheme')) {
+                applyStorefrontTheme(event.matches ? 'dark' : 'light');
+            }
+        });
+
+        if (mobileMenuToggleButton && mobileNav) {
+            mobileMenuToggleButton.addEventListener('click', () => {
+                const expanded = mobileMenuToggleButton.getAttribute('aria-expanded') === 'true';
+                mobileMenuToggleButton.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+                mobileNav.classList.toggle('open');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.getElementById('announcementSlider');
+            if (!slider) return;
+            const items = slider.querySelectorAll('.announcement-item');
+            let index = 0;
+            setInterval(() => {
+                items[index].classList.remove('active');
+                index = (index + 1) % items.length;
+                items[index].classList.add('active');
+            }, 3000);
+        });
+    </script>
     {% block extra_scripts %}{% endblock extra_scripts %}
 </body>
 </html>

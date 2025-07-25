@@ -123,9 +123,9 @@
 .theme-actions .button-manage:hover {
     background-color: #004d33;
 }
-html[data-theme="dark"] .theme-actions .button-manage {
+body.dark-mode .theme-actions .button-manage {
     background-color: var(--success-text);
 }
-html[data-theme="dark"] .theme-actions .button-manage:hover {
+body.dark-mode .theme-actions .button-manage:hover {
     background-color: #52c47c;
 }

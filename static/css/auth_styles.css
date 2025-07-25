@@ -71,7 +71,7 @@
     box-shadow: 0 0 0 2px rgba(41, 76, 116, 0.2);
 }
 
-html[data-theme="dark"] .form-field-wrapper input:focus {
+body.dark-mode .form-field-wrapper input:focus {
      box-shadow: 0 0 0 2px rgba(122, 160, 204, 0.25);
 }
 

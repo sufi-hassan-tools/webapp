@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 
     <style>
-        body { background: #fff; color: #000; }
+        body.light-mode { background: #fff; color: #000; }
         body.dark-mode { background: #000; color: #fff; }
         .light-dark-toggle {
             position: fixed;
@@ -26,7 +26,7 @@
 
     {% block extra_head %}{% endblock extra_head %}
 </head>
-<body class="moohaar-theme-wrapper" data-theme="light">
+<body class="moohaar-theme-wrapper light-mode">
     <button id="light-dark-toggle" class="light-dark-toggle" aria-label="Toggle light and dark mode">🌓</button>
 
     {% if user.is_authenticated %}
@@ -42,12 +42,6 @@
                     <a href="#" class="sidebar-link"><span>Settings</span> (soon)</a>
                     <a href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();" class="sidebar-link"><span>Logout</span></a>
                 </nav>
-                <div class="sidebar-footer">
-                     <button class="theme-toggle-button" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
-                        <span class="icon-light" style="display:none;">☀️</span>
-                        <span class="icon-dark" style="display:none;">🌙</span>
-                    </button>
-                </div>
             </aside>
             <div class="platform-main-content">
                 <main class="container">
@@ -89,67 +83,25 @@
         </footer>
     {% endif %}
 
-    <!-- Theme Toggle Script -->
-    <script>
-        const themeToggleButton = document.getElementById('theme-toggle');
-        const htmlElement = document.documentElement;
-        
-        function applyPlatformTheme(theme) {
-            htmlElement.setAttribute('data-theme', theme);
-            localStorage.setItem('platformTheme', theme);
-            if (themeToggleButton) {
-                const lightIcon = themeToggleButton.querySelector('.icon-light');
-                const darkIcon = themeToggleButton.querySelector('.icon-dark');
-                if (lightIcon && darkIcon) {
-                    if (theme === 'dark') {
-                        lightIcon.style.display = 'inline';
-                        darkIcon.style.display = 'none';
-                    } else {
-                        lightIcon.style.display = 'none';
-                        darkIcon.style.display = 'inline';
-                    }
-                }
-            }
-        }
-        
-        let preferredPlatformTheme = localStorage.getItem('platformTheme');
-        if (!preferredPlatformTheme) {
-            preferredPlatformTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
-        applyPlatformTheme(preferredPlatformTheme);
-
-        if (themeToggleButton) {
-            themeToggleButton.addEventListener('click', () => {
-                const currentTheme = htmlElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                applyPlatformTheme(newTheme);
-            });
-        }
-    </script>
-
     <script>
         (function() {
             const toggle = document.getElementById('light-dark-toggle');
             const body = document.body;
 
             function applyTheme(theme) {
-                if (theme === 'dark') {
-                    body.classList.add('dark-mode');
-                } else {
-                    body.classList.remove('dark-mode');
-                }
+                body.classList.remove('light-mode', 'dark-mode');
+                body.classList.add(`${theme}-mode`);
                 localStorage.setItem('preferredTheme', theme);
             }
 
             const stored = localStorage.getItem('preferredTheme');
-            if (stored) {
-                applyTheme(stored);
-            }
+            const initial = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            applyTheme(initial);
 
             if (toggle) {
                 toggle.addEventListener('click', function () {
-                    const isDark = body.classList.toggle('dark-mode');
-                    localStorage.setItem('preferredTheme', isDark ? 'dark' : 'light');
+                    const newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+                    applyTheme(newTheme);
                 });
             }
         })();

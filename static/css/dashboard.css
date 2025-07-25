@@ -18,7 +18,7 @@
     --stat-increase: #28a745;
     --stat-decrease: #dc3545;
 }
-html[data-theme="dark"] {
+body.dark-mode {
     --background: #131316;
     --sidebar-bg: #1c1c1f;
     --surface: #1c1c1f;
@@ -68,7 +68,7 @@ body {
 }
 .sidebar-link:hover { color: var(--text-primary); background-color: var(--background); }
 .sidebar-link.active { color: var(--text-on-accent); background-color: var(--accent); }
-html[data-theme="dark"] .sidebar-link.active { color: #1c1c1f; }
+body.dark-mode .sidebar-link.active { color: #1c1c1f; }
 .sidebar-link.disabled { color: var(--border); cursor: not-allowed; }
 .sidebar-link .icon { font-size: 1.1rem; width: 20px; text-align: center; }
 .badge.soon { font-size: 0.6rem; padding: 2px 5px; border-radius: 6px; background: var(--border); color: var(--text-secondary); margin-left: auto;}
@@ -105,7 +105,7 @@ html[data-theme="dark"] .sidebar-link.active { color: #1c1c1f; }
 .stat-card .stat-change { font-size: 0.8rem; font-weight: 500; }
 .stat-change.increase { color: var(--stat-increase); }
 .stat-change.decrease { color: var(--stat-decrease); }
-html[data-theme="dark"] .stat-card { background-color: var(--sidebar-bg); } 
+body.dark-mode .stat-card { background-color: var(--sidebar-bg); } 
 
 /* Chart Cards */
 .main-content-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
