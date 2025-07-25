@@ -9,12 +9,25 @@
     <!-- Global Theme Styles -->
     <link rel="stylesheet" href="{% static 'css/theme_moohaar_default.css' %}">
     <link rel="stylesheet" href="{% static 'css/theme_selection_styles.css' %}">
-    
+
     <!-- Page Specific Styles -->
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    <style>
+        body { background: #fff; color: #000; }
+        body.dark-mode { background: #000; color: #fff; }
+        .light-dark-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+        }
+    </style>
+
     {% block extra_head %}{% endblock extra_head %}
 </head>
 <body class="moohaar-theme-wrapper" data-theme="light">
+    <button id="light-dark-toggle" class="light-dark-toggle" aria-label="Toggle light and dark mode">🌓</button>
 
     {% if user.is_authenticated %}
         <!-- Logged-in view with sidebar -->
@@ -113,6 +126,35 @@
             });
         }
     </script>
+
+    <script>
+        (function() {
+            const toggle = document.getElementById('light-dark-toggle');
+            const body = document.body;
+
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    body.classList.add('dark-mode');
+                } else {
+                    body.classList.remove('dark-mode');
+                }
+                localStorage.setItem('preferredTheme', theme);
+            }
+
+            const stored = localStorage.getItem('preferredTheme');
+            if (stored) {
+                applyTheme(stored);
+            }
+
+            if (toggle) {
+                toggle.addEventListener('click', function () {
+                    const isDark = body.classList.toggle('dark-mode');
+                    localStorage.setItem('preferredTheme', isDark ? 'dark' : 'light');
+                });
+            }
+        })();
+    </script>
+
     {% block extra_scripts %}{% endblock extra_scripts %}
 </body>
 </html>
