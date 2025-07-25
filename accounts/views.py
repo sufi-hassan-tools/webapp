@@ -20,15 +20,18 @@ class CustomLoginView(LoginView):
 
 @login_required
 def user_dashboard(request):
-    # Check if the user has any stores
-    user_stores = Store.objects.filter(user=request.user)
-    if not user_stores.exists():
-        messages.info(request, "You don't have a store yet. Let's create one!")
-        return redirect('stores:create_store')
+    """Display the dashboard for the logged in user.
 
-    # If stores exist, display them on the dashboard
+    If the user has created a store (their StoreProfile), display the store
+    details.  Otherwise show a call to action to create one.
+    """
+
+    store_profile = Store.objects.filter(user=request.user).first()
+    if not store_profile:
+        messages.info(request, "You don't have a store yet. Create one to get started!")
+
     context = {
-        'stores': user_stores.order_by('-created_at')
+        'store_profile': store_profile,
     }
     return render(request, 'accounts/user_dashboard.html', context)
 
