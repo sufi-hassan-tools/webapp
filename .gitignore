@@ -15,4 +15,7 @@ media/
 db.sqlite3
 
 # Environment variables file
-.env
+
+# React build
+frontend/node_modules/
+frontend/dist/

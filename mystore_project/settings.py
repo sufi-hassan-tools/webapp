@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic', # Use whitenoise for static files
     'django.contrib.staticfiles',
+    'corsheaders',
     
     # Your Apps
     'accounts',
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', # Whitenoise middleware
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -118,7 +120,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles' # For production
 STATICFILES_DIRS = [
     BASE_DIR / 'static', # For development
 ]
-STATICFILES_STORAGE = STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'  # no compression
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 # Media files (User-uploaded content)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -137,4 +139,4 @@ LOGOUT_REDIRECT_URL = 'platform_home' # Redirect to landing page after logout
 CART_SESSION_ID = 'cart'
 
 # Email configuration for development (prints emails to console)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'\nCORS_ALLOW_ALL_ORIGINS = True
