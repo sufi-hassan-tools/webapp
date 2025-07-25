@@ -1,0 +1,49 @@
+/* General Store Page Styles */
+.store-form-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--color-background-secondary);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-medium);
+}
+
+.store-form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.store-form-header h1 {
+    font-size: 2rem;
+    color: var(--color-text-primary);
+}
+
+.store-form-header p {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+}
+
+/* Form Layout */
+.store-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .store-form {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .form-span-all {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}

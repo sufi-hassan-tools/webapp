@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/theme_selection_styles.css' %}">
     
     <!-- Page Specific Styles -->
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     {% block extra_head %}{% endblock extra_head %}
 </head>
 <body class="moohaar-theme-wrapper" data-theme="light">
@@ -35,7 +36,7 @@
                     </button>
                 </div>
             </aside>
-            <div class="platform-main-content-wrapper">
+            <div class="platform-main-content">
                 <main class="container">
                     {% if messages %}
                         <ul class="messages">

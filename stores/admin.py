@@ -9,10 +9,10 @@ class ThemeAdmin(admin.ModelAdmin):
     list_editable = ('is_active',)
 
 class StoreAdmin(admin.ModelAdmin):
-    list_display = ('name', 'user', 'active_theme', 'created_at') # Added active_theme
-    list_filter = ('user', 'created_at', 'active_theme')
+    list_display = ('name', 'user', 'active_theme') # Added active_theme
+    list_filter = ('user', 'active_theme')
     search_fields = ('name', 'user__email') 
-    readonly_fields = ('id', 'created_at', 'updated_at') 
+    readonly_fields = ('id',) 
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage

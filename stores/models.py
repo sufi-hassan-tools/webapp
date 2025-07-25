@@ -34,8 +34,15 @@ class Store(models.Model):
     business_email = models.EmailField(max_length=255, blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     whatsapp_number = models.CharField(max_length=20, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    store_phone_number = models.CharField(max_length=20, blank=True, null=True)
+    store_whatsapp_number = models.CharField(max_length=20, blank=True, null=True)
+    
+    # New address fields
+    address = models.TextField(max_length=500, blank=True, null=True)
+    city = models.CharField(max_length=100, blank=True, null=True)
+    state = models.CharField(max_length=100, blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
+    
 
     def __str__(self):
         return self.name

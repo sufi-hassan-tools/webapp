@@ -1,10 +1,11 @@
 # This is the full code for mystore_project/accounts/views.py
 
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm, CustomLoginForm
 from stores.models import Store 
 
@@ -19,12 +20,19 @@ class CustomLoginView(LoginView):
 
 @login_required
 def user_dashboard(request):
-    # This view is already protected by @login_required
-    user_stores = Store.objects.filter(user=request.user).order_by('-created_at')
+    # Check if the user has any stores
+    user_stores = Store.objects.filter(user=request.user)
+    if not user_stores.exists():
+        messages.info(request, "You don't have a store yet. Let's create one!")
+        return redirect('stores:create_store')
+
+    # If stores exist, display them on the dashboard
     context = {
-        'stores': user_stores
+        'stores': user_stores.order_by('-created_at')
     }
     return render(request, 'accounts/user_dashboard.html', context)
+
+from .models import UserProfile
 
 def register(request):
     # Redirect already authenticated users
@@ -32,11 +40,21 @@ def register(request):
         return redirect('user_dashboard')
 
     if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
+        form = UserRegistrationForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Account created successfully! You can now log in.')
-            return redirect('login')
+            user = form.save()
+            
+            # Create UserProfile
+            UserProfile.objects.create(
+                user=user,
+                name=form.cleaned_data.get('name'),
+                phone_number=form.cleaned_data.get('phone_number'),
+                profile_picture=form.cleaned_data.get('profile_picture')
+            )
+
+            login(request, user)  # Log the user in
+            messages.success(request, "Account created successfully! Now, let's create your store.")
+            return redirect('stores:create_store')
     else:
         form = UserRegistrationForm()
     return render(request, 'accounts/register.html', {'form': form})

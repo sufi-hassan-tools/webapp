@@ -71,6 +71,58 @@ body[data-theme="dark"] .moohaar-theme-wrapper {
 /* ... (All existing body, .container, header, nav, announcement bar, mobile menu, hero, scrolling text, categories, promo banners, previous product card styles, footer, forms, messages, dashboard styles) ... */
 /* The styles below include the Product Detail Page specific styles, merged with all prior CSS */
 
+/* Additional Mobile-First and Responsive Improvements */
+
+/* Make the sidebar collapsible on smaller screens */
+@media (max-width: 768px) {
+    .platform-wrapper {
+        flex-direction: column;
+    }
+
+    .platform-sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        transform: none;
+        box-shadow: none;
+        border-bottom: 1px solid var(--theme-border-light);
+    }
+
+    .sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+    }
+
+    .sidebar-nav {
+        display: none; /* Hidden by default on mobile */
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .sidebar-nav.active {
+        display: flex;
+    }
+
+    .mobile-menu-toggle {
+        display: flex; /* Show the hamburger menu */
+    }
+}
+
+/* General Form Styling for Mobile */
+form.auth-form, main form {
+    padding: 1.5rem;
+}
+
+/* Ensure all form inputs are full-width on mobile */
+.form-field-wrapper input,
+.form-field-wrapper select,
+.form-field-wrapper textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
 body { font-family: var(--font-english); line-height: 1.6; margin: 0; padding: 0; background-color: var(--theme-bg-light); color: var(--theme-text-dark); display: flex; flex-direction: column; min-height: 100vh; transition: background-color 0.3s ease, color 0.3s ease; }
 .moohaar-theme-wrapper .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 0 15px; }
 .storefront-site-header { position: relative; z-index: 999; }

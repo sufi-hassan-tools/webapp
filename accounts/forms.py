@@ -7,10 +7,12 @@ User = get_user_model() # Gets our custom User model
 class UserRegistrationForm(UserCreationForm):
     name = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Your Full Name'}))
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'placeholder': 'Your Email Address'}))
+    phone_number = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'Your Phone Number'}))
+    profile_picture = forms.ImageField(required=False)
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('name', 'email') # 'password1' and 'password2' are handled by UserCreationForm
+        fields = ('name', 'email', 'phone_number', 'profile_picture') # 'password1' and 'password2' are handled by UserCreationForm
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

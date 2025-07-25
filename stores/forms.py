@@ -1,50 +1,51 @@
-# This is the full code for mystore_project/stores/forms.py
-
 from django import forms
 from .models import Store, Product
 
-class CustomClearableFileInput(forms.ClearableFileInput):
-    allow_multiple_selected = True
-
 class StoreCreationForm(forms.ModelForm):
+    STATE_CHOICES = [
+        ('', 'Select a Province/Territory'),
+        ('AZAD JAMMU & KASHMIR', 'Azad Jammu & Kashmir'),
+        ('BALOCHISTAN', 'Balochistan'),
+        ('GILGIT-BALTISTAN', 'Gilgit-Baltistan'),
+        ('ISLAMABAD CAPITAL TERRITORY', 'Islamabad Capital Territory'),
+        ('KHYBER PAKHTUNKHWA', 'Khyber Pakhtunkhwa'),
+        ('PUNJAB', 'Punjab'),
+        ('SINDH', 'Sindh'),
+    ]
+
+    state = forms.ChoiceField(choices=STATE_CHOICES, required=True,
+                              widget=forms.Select(attrs={'class': 'form-select'}))
+    city = forms.CharField(max_length=100, required=True,
+                           widget=forms.TextInput(attrs={'class': 'form-control'}))
+    address = forms.CharField(max_length=255, required=True,
+                              widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+    store_phone_number = forms.CharField(max_length=20, required=True,
+                                   widget=forms.TextInput(attrs={'class': 'form-control'}))
+    store_whatsapp_number = forms.CharField(max_length=20, required=False,
+                                      widget=forms.TextInput(attrs={'class': 'form-control'}))
+
     class Meta:
         model = Store
-        fields = ['name', 'business_email', 'phone_number', 'whatsapp_number']
+        fields = ['name', 'business_email', 'phone_number', 'whatsapp_number', 'state', 'city', 'address', 'store_phone_number', 'store_whatsapp_number']
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Your Store Name'}),
-            'business_email': forms.EmailInput(attrs={'placeholder': 'Store Contact Email (Optional)'}),
-            'phone_number': forms.TextInput(attrs={'placeholder': 'Store Phone Number (Optional)'}),
-            'whatsapp_number': forms.TextInput(attrs={'placeholder': 'Store WhatsApp Number (Optional)'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'business_email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'whatsapp_number': forms.TextInput(attrs={'class': 'form-control'}),
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['name'].required = True
-
 
 class ProductForm(forms.ModelForm):
-    gallery_images = forms.FileField(
-        required=False,
-        widget=CustomClearableFileInput(attrs={'multiple': True})
-    )
-
     class Meta:
         model = Product
-        fields = ['name', 'sku', 'category', 'price', 'weight', 'description', 'stock_quantity', 'image', 'gallery_images']
+        fields = ['name', 'sku', 'category', 'description', 'price', 'weight', 'image', 'stock_quantity', 'is_available']
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Enter product name'}),
-            'sku': forms.TextInput(attrs={'placeholder': 'SKU / Code'}),
-            'category': forms.TextInput(attrs={'placeholder': 'Category'}),
-            'description': forms.Textarea(attrs={'placeholder': 'Describe your product', 'rows': 4}),
-            'price': forms.NumberInput(attrs={'placeholder': '0.00'}),
-            'weight': forms.NumberInput(attrs={'placeholder': 'e.g., 0.5'}),
-            'stock_quantity': forms.NumberInput(attrs={'placeholder': '0'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'sku': forms.TextInput(attrs={'class': 'form-control'}),
+            'category': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'price': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+            'weight': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+            'stock_quantity': forms.NumberInput(attrs={'class': 'form-control'}),
+            'is_available': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Example: Making description not strictly required by the form
-        # (though the model allows blank=True, null=True)
-        # self.fields['description'].required = False 
-        # self.fields['image'].required = False # Model already allows blank=True for image
-        pass # Add any other custom form initialization if needed

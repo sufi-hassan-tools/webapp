@@ -3,6 +3,9 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
+import string
+import random
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, name, password=None, **extra_fields):
@@ -68,3 +71,22 @@ class User(AbstractBaseUser, PermissionsMixin):
         related_name="custom_user_account_set", # Ensure this is unique
         related_query_name="user_account",
     )
+
+def generate_profile_id():
+    """Generate a unique 8-character alphanumeric ID."""
+    length = 8
+    characters = string.ascii_letters + string.digits
+    while True:
+        profile_id = ''.join(random.choice(characters) for i in range(length))
+        if not UserProfile.objects.filter(profile_id=profile_id).exists():
+            return profile_id
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
+    profile_id = models.CharField(max_length=8, unique=True, default=generate_profile_id)
+    name = models.CharField(max_length=255, blank=True)
+    phone_number = models.CharField(max_length=20, blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
+
+    def __str__(self):
+        return self.user.email
