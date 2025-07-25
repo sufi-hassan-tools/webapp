@@ -20,6 +20,23 @@
 
 {% block content %}
 <div class="animated fadeIn">
+    <div class="row mb-4">
+        <div class="col-lg-6">
+            {% if store_profile %}
+            <div class="card">
+                <div class="card-header"><strong>Your Store</strong></div>
+                <div class="card-body">
+                    <p><strong>Store ID:</strong> {{ store_profile.id }}</p>
+                    <p><strong>Store Name:</strong> {{ store_profile.name }}</p>
+                    <p><strong>Phone Number:</strong> {{ store_profile.store_phone_number|default:"-" }}</p>
+                    <p><strong>WhatsApp Number:</strong> {{ store_profile.store_whatsapp_number|default:"-" }}</p>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'stores:create_store' %}" class="btn btn-primary">Create Your Store</a>
+            {% endif %}
+        </div>
+    </div>
     <div class="row">
         {# ... your existing 4 stat widgets here ... #}
     </div>
