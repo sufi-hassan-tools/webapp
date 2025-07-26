@@ -139,4 +139,5 @@ LOGOUT_REDIRECT_URL = 'platform_home' # Redirect to landing page after logout
 CART_SESSION_ID = 'cart'
 
 # Email configuration for development (prints emails to console)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'\nCORS_ALLOW_ALL_ORIGINS = True
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+CORS_ALLOW_ALL_ORIGINS = True
