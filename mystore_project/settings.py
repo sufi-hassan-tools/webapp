@@ -120,7 +120,13 @@ STATIC_ROOT = BASE_DIR / 'staticfiles' # For production
 STATICFILES_DIRS = [
     BASE_DIR / 'static', # For development
 ]
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+# Use hashed static files with Whitenoise. Switch to CompressedStaticFilesStorage
+# by setting STATICFILES_STORAGE=whitenoise.storage.CompressedStaticFilesStorage
+# via environment variable if Manifest build issues occur.
+STATICFILES_STORAGE = os.environ.get(
+    'STATICFILES_STORAGE',
+    'whitenoise.storage.CompressedManifestStaticFilesStorage'
+)
 # Media files (User-uploaded content)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

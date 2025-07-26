@@ -79,6 +79,13 @@ Instructions for a software engineer to set up and run the project locally.
     ```
     The application will be available at `http://127.0.0.1:8000/`.
 
+7.  **Before deploying**, run the static reference check and collect static
+    files:
+    ```bash
+    python manage.py check_static_references
+    python manage.py collectstatic --noinput
+    ```
+
 ---
 
 ## 🗺️ Future Roadmap
