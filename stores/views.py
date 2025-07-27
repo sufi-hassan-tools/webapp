@@ -34,3 +34,10 @@ def store_detail(request, store_id):
     })
 
 
+# New view for selecting a store theme
+def select_theme(request, store_id):
+    """Display a page to choose a theme for the given store."""
+    store = get_object_or_404(Store, id=store_id)
+    return render(request, 'stores/select_theme.html', {'store': store})
+
+
