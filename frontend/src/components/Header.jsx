@@ -1,9 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../src/assets/eshopper/css/style.css';
 import '../../src/assets/eshopper/lib/owlcarousel/assets/owl.carousel.min.css';
 import '../../src/assets/eshopper/js/main.js';
 
 const Header = () => {
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setDarkMode(savedTheme === 'dark');
+    } else {
+      setDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
     <div className="container-fluid">
         <div className="row bg-secondary py-2 px-xl-5">
@@ -23,6 +48,9 @@ const Header = () => {
                     <a className="text-dark px-2" href=""><i className="fab fa-linkedin-in"></i></a>
                     <a className="text-dark px-2" href=""><i className="fab fa-instagram"></i></a>
                     <a className="text-dark pl-2" href=""><i className="fab fa-youtube"></i></a>
+                    <button onClick={toggleDarkMode} className="ml-3 px-2 py-1 rounded-md bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                        {darkMode ? 'Light Mode' : 'Dark Mode'}
+                    </button>
                 </div>
             </div>
         </div>
