@@ -1,53 +1,64 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import ProductCard from '../components/ProductCard';
+import product1 from '../assets/eshopper/img/product-1.jpg';
+import product2 from '../assets/eshopper/img/product-2.jpg';
+import product3 from '../assets/eshopper/img/product-3.jpg';
+import product4 from '../assets/eshopper/img/product-4.jpg';
+import product5 from '../assets/eshopper/img/product-5.jpg';
+import product6 from '../assets/eshopper/img/product-6.jpg';
+import product7 from '../assets/eshopper/img/product-7.jpg';
+import product8 from '../assets/eshopper/img/product-8.jpg';
+import cat1 from '../assets/eshopper/img/cat-1.jpg';
+import cat2 from '../assets/eshopper/img/cat-2.jpg';
+import cat3 from '../assets/eshopper/img/cat-3.jpg';
 
 const HomePage = () => {
   const dummyProducts = [
     {
-      imageUrl: '/src/assets/eshopper/img/product-1.jpg',
+      imageUrl: product1,
       title: 'Colorful Stylish Shirt',
       price: 123.00,
       oldPrice: 150.00,
     },
     {
-      imageUrl: '/src/assets/eshopper/img/product-2.jpg',
+      imageUrl: product2,
       title: 'Colorful Stylish Shirt',
       price: 123.00,
       oldPrice: 150.00,
     },
     {
-      imageUrl: '/src/assets/eshopper/img/product-3.jpg',
+      imageUrl: product3,
       title: 'Colorful Stylish Shirt',
       price: 123.00,
       oldPrice: 150.00,
     },
     {
-      imageUrl: '/src/assets/eshopper/img/product-4.jpg',
+      imageUrl: product4,
       title: 'Colorful Stylish Shirt',
       price: 123.00,
       oldPrice: 150.00,
     },
     {
-      imageUrl: '/src/assets/eshopper/img/product-5.jpg',
+      imageUrl: product5,
       title: 'Colorful Stylish Shirt',
       price: 123.00,
       oldPrice: 150.00,
     },
     {
-      imageUrl: '/src/assets/eshopper/img/product-6.jpg',
+      imageUrl: product6,
       title: 'Colorful Stylish Shirt',
       price: 123.00,
       oldPrice: 150.00,
     },
     {
-      imageUrl: '/src/assets/eshopper/img/product-7.jpg',
+      imageUrl: product7,
       title: 'Colorful Stylish Shirt',
       price: 123.00,
       oldPrice: 150.00,
     },
     {
-      imageUrl: '/src/assets/eshopper/img/product-8.jpg',
+      imageUrl: product8,
       title: 'Colorful Stylish Shirt',
       price: 123.00,
       oldPrice: 150.00,
@@ -93,7 +104,7 @@ const HomePage = () => {
             <div className="cat-item d-flex flex-column border mb-4" style={{ padding: '30px' }}>
               <p className="text-right">15 Products</p>
               <a href="" className="cat-img position-relative overflow-hidden mb-3">
-                <img className="img-fluid" src="/src/assets/eshopper/img/cat-1.jpg" alt="" />
+                <img className="img-fluid" src={cat1} alt="" />
               </a>
               <h5 className="font-weight-semi-bold m-0">Electronics</h5>
             </div>
@@ -102,7 +113,7 @@ const HomePage = () => {
             <div className="cat-item d-flex flex-column border mb-4" style={{ padding: '30px' }}>
               <p className="text-right">15 Products</p>
               <a href="" className="cat-img position-relative overflow-hidden mb-3">
-                <img className="img-fluid" src="/src/assets/eshopper/img/cat-2.jpg" alt="" />
+                <img className="img-fluid" src={cat2} alt="" />
               </a>
               <h5 className="font-weight-semi-bold m-0">Fashion</h5>
             </div>
@@ -111,7 +122,7 @@ const HomePage = () => {
             <div className="cat-item d-flex flex-column border mb-4" style={{ padding: '30px' }}>
               <p className="text-right">15 Products</p>
               <a href="" className="cat-img position-relative overflow-hidden mb-3">
-                <img className="img-fluid" src="/src/assets/eshopper/img/cat-3.jpg" alt="" />
+                <img className="img-fluid" src={cat3} alt="" />
               </a>
               <h5 className="font-weight-semi-bold m-0">Home Goods</h5>
             </div>
@@ -141,5 +152,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
 

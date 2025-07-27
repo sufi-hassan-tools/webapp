@@ -1,4 +1,7 @@
 import React from 'react';
+import '../../src/assets/eshopper/css/style.css';
+import '../../src/assets/eshopper/lib/owlcarousel/assets/owl.carousel.min.css';
+import '../../src/assets/eshopper/js/main.js';
 
 const Header = () => {
   return (
