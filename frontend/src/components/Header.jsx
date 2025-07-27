@@ -1,10 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import '../../src/assets/eshopper/css/style.css';
-import '../../src/assets/eshopper/lib/owlcarousel/assets/owl.carousel.min.css';
-import '../../src/assets/eshopper/js/main.js';
+import '../assets/eshopper/css/style.css';
+import '../assets/eshopper/css/owl.carousel.min.css';
+import '../assets/eshopper/css/owl.theme.default.min.css';
 
 const Header = () => {
   const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Dynamically load main.js
+    const script = document.createElement('script');
+    script.src = '/src/assets/eshopper/js/main.js';
+    script.async = true;
+    script.type = 'module';
+    document.body.appendChild(script);
+
+    return () => {
+      // Cleanup script on component unmount
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -30,6 +46,7 @@ const Header = () => {
   };
 
   return (
+    <>
     <div className="container-fluid">
         <div className="row bg-secondary py-2 px-xl-5">
             <div className="col-lg-6 d-none d-lg-block">
@@ -116,7 +133,7 @@ const Header = () => {
             </div>
         </div>
     </div>
-    </div >
+    </>
   );
 };
 
