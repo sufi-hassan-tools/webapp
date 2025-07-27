@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Theme Applied{% endblock %}
+{% block content %}
+<h2>Theme Applied</h2>
+<p>{{ theme.name }} has been applied to {{ store.name }}.</p>
+<a href="{% url 'stores:store_detail' store_id=store.id %}">Back to Store</a>
+{% endblock %}

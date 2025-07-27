@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Apply Theme{% endblock %}
+{% block content %}
+<h2>Select a theme for {{ store.name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    <select name="theme_id">
+        {% for theme in themes %}
+            <option value="{{ theme.id }}">{{ theme.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Apply Theme</button>
+</form>
+{% endblock %}
