@@ -1,4 +1,5 @@
 import Header from './Header';
+import Footer from './Footer';
 
 const Layout = ({ children }) => {
   return (
@@ -7,10 +8,7 @@ const Layout = ({ children }) => {
       <main className="flex-grow container mx-auto p-4">
         {children}
       </main>
-      <footer className="bg-gray-800 text-white p-4">
-        {/* Footer component will be imported here */}
-        <p>Footer Placeholder</p>
-      </footer>
+      <Footer />
     </div>
   );
 };
