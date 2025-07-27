@@ -1,7 +1,9 @@
 from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 from .models import StoreProfile, Product
 from .serializers import StoreProfileSerializer, ProductSerializer
+from .models import Store
 
 # Placeholder view for creating a store
 def create_store(request):
@@ -20,5 +22,15 @@ class ProductListAPIView(generics.ListAPIView):
     def get_queryset(self):
         store_id = self.kwargs['store_id']
         return Product.objects.filter(store__id=store_id)
+
+
+def store_detail(request, store_id):
+    """Display details for a single store with its products."""
+    store = get_object_or_404(Store, id=store_id)
+    products = Product.objects.filter(store=store)
+    return render(request, 'stores/store_detail.html', {
+        'store': store,
+        'products': products,
+    })
 
 
