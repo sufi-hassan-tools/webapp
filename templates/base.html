@@ -59,10 +59,10 @@
         <span class="slider"></span>
     </label>
 
-    {% if user.is_authenticated %}
-        <!-- Logged-in view with sidebar -->
-        <div class="platform-wrapper">
-            <aside class="platform-sidebar">
+    {% include 'includes/header.html' %}
+    <div class="platform-wrapper">
+        {% if user.is_authenticated %}
+            <aside class="platform-sidebar hidden md:block">
                 <div class="sidebar-header">
                     <a href="{% url 'platform_home' %}" class="sidebar-logo-text">Moohaar</a>
                 </div>
@@ -70,48 +70,28 @@
                     <a href="{% url 'user_dashboard' %}" class="sidebar-link"><span>🏠</span> Dashboard</a>
                     <a href="#" class="sidebar-link"><span>Billing</span> (soon)</a>
                     <a href="#" class="sidebar-link"><span>Settings</span> (soon)</a>
-                    <a href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();" class="sidebar-link"><span>Logout</span></a>
+                    <a href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();" class="sidebar-link">Logout</a>
                 </nav>
             </aside>
-            <div class="platform-main-content">
-                <main class="container">
-                    {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                                <li class="{{ message.tags }}">{{ message }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                    {% block content %}{% endblock content %}
-                </main>
-            </div>
+        {% endif %}
+        <div class="platform-main-content">
+            <main class="container">
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li class="{{ message.tags }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% block content %}{% endblock content %}
+                {% block auth_content %}{% endblock auth_content %}
+            </main>
         </div>
-        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-            {% csrf_token %}
-        </form>
-    {% else %}
-        <!-- Logged-out view with simple header/footer for auth pages -->
-        <header class="site-header">
-            <div class="container">
-                <div class="logo-area">
-                    <a href="{% url 'platform_home' %}" class="logo-text">Moohaar</a>
-                    <p class="tagline">ویب سائٹ آج اور ابھی</p>
-                </div>
-                <nav class="main-nav">
-                    <a href="{% url 'login' %}">Login</a>
-                    <a href="{% url 'register' %}">Sign Up</a>
-                </nav>
-            </div>
-        </header>
-        <main class="container">
-            {% block auth_content %}{% endblock auth_content %}
-        </main>
-        <footer class="site-footer">
-            <div class="container">
-                <p>&copy; {% now "Y" %} Moohaar</p>
-            </div>
-        </footer>
-    {% endif %}
+    </div>
+    <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+        {% csrf_token %}
+    </form>
+    {% include 'includes/footer.html' %}
 
     <script>
         (function() {
