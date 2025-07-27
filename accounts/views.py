@@ -56,8 +56,8 @@ def register(request):
             )
 
             login(request, user)  # Log the user in
-            messages.success(request, "Account created successfully! Now, let's create your store.")
-            return redirect('stores:create_store')
+            messages.success(request, "Account created successfully!")
+            return redirect('user_dashboard')
     else:
         form = UserRegistrationForm()
     return render(request, 'accounts/register.html', {'form': form})
